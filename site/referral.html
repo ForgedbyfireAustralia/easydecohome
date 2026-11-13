@@ -1,0 +1,280 @@
+<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Referral Flow Example</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one demo with three role views (customer, referrer, Hong Kong office) sharing in-memory state, so one order request can be followed end to end. Same warm palette as the store. */
+:root{
+  --bg:#faf8f4; --surface:#ffffff; --sand:#ece5da; --ink:#26231f; --muted:#6f675d; --line:#e2dacd;
+  --olive:#3f5a3c; --olive-ink:#ffffff; --brass:#b08a4a; --ph:#b5651d; --hk:#8a3b2e; --hk-soft:#f4e3df; --ok:#2f6b3a; --ok-soft:#e1efe3; --wait:#8a6a1f; --wait-soft:#f5ecd6;
+  --display:"Bricolage Grotesque","Trebuchet MS",sans-serif; --body:"Figtree","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#171613; --surface:#201e1a; --sand:#2a2722; --ink:#f1ece3; --muted:#a9a093; --line:#36322b;
+  --olive:#9cbf96; --olive-ink:#142012; --brass:#d4b072; --ph:#e09a52; --hk:#e3988a; --hk-soft:#3a2622; --ok:#8fcf9a; --ok-soft:#1f3324; --wait:#e2c477; --wait-soft:#3a3220; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#171613; --surface:#201e1a; --sand:#2a2722; --ink:#f1ece3; --muted:#a9a093; --line:#36322b;
+  --olive:#9cbf96; --olive-ink:#142012; --brass:#d4b072; --ph:#e09a52; --hk:#e3988a; --hk-soft:#3a2622; --ok:#8fcf9a; --ok-soft:#1f3324; --wait:#e2c477; --wait-soft:#3a3220; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ink)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:700;line-height:1.1;letter-spacing:-.015em;text-wrap:balance}
+h1{font-size:clamp(1.7rem,3.6vw,2.4rem)} h2{font-size:1.35rem} h3{font-size:1.02rem}
+p{margin:0}
+.ph{font:600 .82em var(--body);color:var(--ph);border:1px dashed var(--ph);border-radius:4px;padding:0 .35em;white-space:nowrap}
+.btn{font:700 .9rem var(--body);border-radius:999px;padding:.75em 1.4em;border:1.5px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:.5em;text-decoration:none}
+.btn.solid{background:var(--olive);border-color:var(--olive);color:var(--olive-ink)}
+.btn.hk{background:var(--hk);border-color:var(--hk);color:#fff}
+.btn.small{padding:.45em .95em;font-size:.82rem}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+:is(a,button,input,select,textarea):focus-visible{outline:2px solid var(--olive);outline-offset:2px}
+
+.demo{background:var(--ink);color:var(--bg);font-size:.84rem;padding-block:10px}
+.demo .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.demo b{font-weight:700}
+.demo button{background:none;border:1px solid currentColor;color:inherit;border-radius:999px;padding:.25em .9em;font:inherit;cursor:pointer}
+
+.top{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;padding-block:28px 18px}
+.top p{color:var(--muted);max-width:60ch;margin-top:6px}
+.roles{display:flex;gap:6px;background:var(--sand);padding:5px;border-radius:999px;flex-wrap:wrap}
+.roles button{border:0;background:none;font:600 .9rem var(--body);color:var(--muted);padding:.6em 1.1em;border-radius:999px;cursor:pointer;display:flex;gap:.5em;align-items:center}
+.roles button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.roles .dot{width:8px;height:8px;border-radius:50%}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px}
+.flow div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:.82rem;color:var(--muted)}
+.flow b{display:block;color:var(--ink);font-size:.86rem}
+.flow div.on{border-color:var(--ink)}
+@media (max-width:760px){.flow{grid-template-columns:1fr 1fr}}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,3vw,28px)}
+.grid2{display:grid;grid-template-columns:1.25fr 1fr;gap:20px;align-items:start}
+@media (max-width:900px){.grid2{grid-template-columns:1fr}}
+.stack{display:grid;gap:16px}
+
+/* customer */
+.refchip{display:inline-flex;gap:8px;align-items:center;background:var(--sand);border-radius:999px;padding:.35em .9em;font-size:.82rem;font-weight:600}
+.picks{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.pick{border:2px solid var(--line);border-radius:12px;padding:0;background:var(--surface);cursor:pointer;text-align:left;font:inherit;color:inherit;overflow:hidden;display:grid}
+.pick img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.pick span{padding:8px 10px;font-size:.84rem;line-height:1.3}
+.pick span small{display:block;color:var(--muted);font-size:.74rem}
+.pick[aria-pressed="true"]{border-color:var(--olive)}
+form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label.f{display:grid;gap:5px;font-size:.82rem;font-weight:600;min-width:0}
+label.f :is(input,select,textarea){font:inherit;font-weight:400;padding:.65em .8em;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%}
+form .full{grid-column:1/-1}
+@media (max-width:520px){form{grid-template-columns:1fr}}
+.seller{border:1.5px solid var(--hk);background:var(--hk-soft);border-radius:12px;padding:14px 16px;display:grid;gap:6px;font-size:.88rem}
+.seller b{color:var(--hk)}
+.agree{display:flex;gap:10px;align-items:flex-start;font-size:.88rem}
+.agree input{margin-top:4px;width:18px;height:18px;accent-color:var(--olive);flex:none}
+.msg{font-weight:600;font-size:.9rem}
+.done{border:1.5px solid var(--ok);background:var(--ok-soft);border-radius:12px;padding:16px;display:grid;gap:8px}
+
+/* lists */
+.req{border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:10px;background:var(--bg)}
+.req-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:start}
+.status{font-size:.74rem;font-weight:700;border-radius:999px;padding:.25em .75em;white-space:nowrap}
+.s-requested{background:var(--wait-soft);color:var(--wait)}
+.s-confirmed{background:var(--ok-soft);color:var(--ok)}
+.s-paid{background:var(--ok);color:var(--ok-soft)}
+.s-declined{background:var(--hk-soft);color:var(--hk)}
+.meta{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:.82rem;color:var(--muted)}
+.hkform{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-items:end}
+.hkform label{display:grid;gap:4px;font-size:.76rem;font-weight:600;min-width:0}
+.hkform input,.hkform select{font:inherit;padding:.5em .6em;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);width:100%}
+.hkform .acts{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap}
+@media (max-width:520px){.hkform{grid-template-columns:1fr 1fr}}
+.empty{color:var(--muted);font-size:.9rem;padding:8px 0}
+
+/* referrer */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px}
+.stat b{font-family:var(--display);font-size:1.5rem;display:block;font-variant-numeric:tabular-nums}
+.stat span{font-size:.78rem;color:var(--muted)}
+@media (max-width:520px){.stats{grid-template-columns:1fr}}
+.linkbox{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.85rem;word-break:break-all}
+.linkbox code{flex:1;min-width:0;font-family:ui-monospace,Menlo,monospace;font-size:.8rem}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rules div{border-radius:12px;padding:12px 14px;font-size:.85rem;display:grid;gap:6px}
+.rules .can{background:var(--ok-soft)} .rules .cant{background:var(--hk-soft)}
+.rules ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
+@media (max-width:620px){.rules{grid-template-columns:1fr}}
+.script{border-left:3px solid var(--brass);display:grid;gap:8px;font-size:.88rem}
+.script q{font-style:italic}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tablewrap{overflow-x:auto}
+.why{font-size:.84rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px}
+footer{padding-block:28px 40px;color:var(--muted);font-size:.82rem}
+</style>
+
+<div class="demo"><div class="wrap"><span><b>Example only.</b> Three views of one order flow. Nothing here is saved, emailed or charged.</span><button type="button" id="resetBtn">Reset example</button></div></div>
+
+<main class="wrap">
+  <div class="top">
+    <div><h1>How a referred order works</h1><p>The referrer introduces. The customer requests. The Hong Kong company reviews, sets the price and accepts, then invoices and takes payment itself. Switch views to follow one order through.</p></div>
+    <div class="roles" role="group" aria-label="View as" id="roles">
+      <button data-role="customer" aria-pressed="true"><span class="dot" style="background:var(--olive)"></span>Customer</button>
+      <button data-role="referrer" aria-pressed="false"><span class="dot" style="background:var(--brass)"></span>Referrer (Person B)</button>
+      <button data-role="hk" aria-pressed="false"><span class="dot" style="background:var(--hk)"></span>Hong Kong office</button>
+    </div>
+  </div>
+
+  <div class="flow" id="flow">
+    <div data-step="1"><b>1 · Referral link</b>Person B shares a link or code.</div>
+    <div data-step="2"><b>2 · Order request</b>Customer asks. Nothing is final.</div>
+    <div data-step="3"><b>3 · Hong Kong accepts</b>Sets price and freight, sends invoice.</div>
+    <div data-step="4"><b>4 · Commission</b>Paid to Person B after customer pays HK.</div>
+  </div>
+
+  <section id="view"></section>
+</main>
+
+<footer class="wrap">Sold and invoiced by <span class="ph">HK COMPANY NAME</span>, Hong Kong · Company no. <span class="ph">HK CR NUMBER</span> · Referral partners don't sell, set prices or take payment. Not tax or legal advice: have an international tax adviser review the agreement and this flow.</footer>
+
+<script>
+/* ==== Example data (in memory only) ==== */
+const HK_NAME="[HK COMPANY NAME]";
+const RATE=0.08; // [COMMISSION %] example 8%: set in Person B's agreement
+const REFERRER={name:"Sam (example)",code:"B-ROCKY-01"};
+const PIECES=[
+  {id:"as813109-120",name:"Noosa",code:"AS813109-120",img:"img/as813109-120-1.webp"},
+  {id:"as813046c-100",name:"Kuranda",code:"AS813046C-100",img:"img/as813046c-100-1.webp"},
+  {id:"as810879b-90",name:"Yeppoon",code:"AS810879B-90",img:"img/as810879b-90-1.webp"},
+  {id:"as813045-90",name:"Coolum",code:"AS813045-90",img:"img/as813045-90-1.webp"},
+  {id:"kl810892a-80",name:"Eumundi",code:"KL810892A-80",img:"img/kl810892a-80-1.webp"},
+];
+const SEED=()=>[
+  {id:"R-1041",piece:"as810879b-90",customer:"Example customer A",postcode:"4700",ref:"B-ROCKY-01",status:"paid",price:890,freight:0,lead:"Pickup now",terms:"v1.0",at:"14 Oct"},
+  {id:"R-1042",piece:"kl810892a-80",customer:"Example customer B",postcode:"4703",ref:"B-ROCKY-01",status:"confirmed",price:760,freight:95,lead:"4 weeks",terms:"v1.0",at:"18 Oct"},
+];
+let S={role:"customer",reqs:SEED(),pick:PIECES[0].id,lastSent:null,seq:1043};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const byId=id=>PIECES.find(p=>p.id===id);
+const HK=()=>HK_NAME.startsWith("[")?`<span class="ph">${esc(HK_NAME.slice(1,-1))}</span>`:esc(HK_NAME);
+const aud=n=>{const v=Number(n||0);return "$"+v.toLocaleString("en-AU",{minimumFractionDigits:Number.isInteger(v)?0:2,maximumFractionDigits:2});};
+const LABEL={requested:"Waiting for Hong Kong",confirmed:"Confirmed by Hong Kong",paid:"Customer paid · commission paid",declined:"Declined by Hong Kong"};
+const commission=r=>r.price?r.price*RATE:0;
+
+function render(){
+  document.querySelectorAll("#roles button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.role===S.role));
+  const on={customer:[1,2],referrer:[1,4],hk:[3,4]}[S.role];
+  document.querySelectorAll("#flow div").forEach(d=>d.classList.toggle("on",on.includes(+d.dataset.step)));
+  $("#view").innerHTML=S.role==="customer"?customerView():S.role==="referrer"?referrerView():hkView();
+}
+
+/* ==== Customer ==== */
+function customerView(){
+  if(S.lastSent){const r=S.reqs.find(x=>x.id===S.lastSent),p=byId(r.piece);
+    return `<div class="grid2"><div class="panel stack"><div class="done"><h2>Request ${r.id} sent</h2>
+      <p>Your request for the <b>${p.name}</b> has gone to <b>${HK()}</b> in Hong Kong. They'll check stock and freight to ${esc(r.postcode)} and email you a confirmation and invoice.</p>
+      <p>Nothing is final until you accept their confirmation and pay them directly. Your referrer can't accept orders, change prices or take payment.</p></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-role-go="hk">See what Hong Kong sees →</button><button class="btn" data-new="1">Send another request</button></div></div>
+      ${whyPanel()}</div>`;}
+  const p=byId(S.pick);
+  return `<div class="grid2"><div class="panel stack">
+    <span class="refchip">Referred by ${esc(REFERRER.name)} · ${REFERRER.code}</span>
+    <h2>Request to order</h2>
+    <div class="picks">${PIECES.map(x=>`<button type="button" class="pick" data-pick="${x.id}" aria-pressed="${x.id===S.pick}"><img src="${x.img}" alt=""><span>The ${x.name}<small>${x.code}</small></span></button>`).join("")}</div>
+    <form id="custForm" novalidate>
+      <label class="f">Your name<input id="c-name" autocomplete="name" placeholder="e.g. Alex Smith"></label>
+      <label class="f">Email<input id="c-email" type="email" autocomplete="email" placeholder="you@example.com"></label>
+      <label class="f">Delivery postcode<input id="c-post" inputmode="numeric" maxlength="4" placeholder="4700"></label>
+      <label class="f">Referral code<input id="c-ref" value="${REFERRER.code}"></label>
+      <div class="full seller"><b>Who you're buying from</b>
+        <span>This is a request, not a purchase. <b>${HK()}</b> (Hong Kong, company no. <span class="ph">HK CR NUMBER</span>) reviews it, sets the final price and freight, and sends you an invoice on its own terms. You pay ${HK()} directly.</span>
+        <span>Your referrer introduced you and can help with this form. They don't sell, set prices or take payment.</span></div>
+      <label class="full agree"><input type="checkbox" id="c-agree"><span>I understand I'm asking to buy the <b>${p.name}</b> from ${HK()} on its terms (<span class="ph">LINK TO HK TERMS</span>), and that nothing is final until I accept its confirmation.</span></label>
+      <div class="full"><button class="btn solid" type="submit">Send order request</button></div>
+      <p class="full msg" id="c-msg" role="status"></p>
+    </form></div>${whyPanel()}</div>`;
+}
+function whyPanel(){return `<aside class="panel stack"><h3>What this view shows</h3>
+  <p class="why" style="border:0;padding:0">Every customer-facing step names the Hong Kong company as the seller. The button says "Send order request", not "Buy now". No price is final here and no payment is taken, so the referrer can't close the sale even by helping with the form.</p>
+  <p class="why">On your live site, the referral code fills in from the referrer's link (<code>?ref=B-ROCKY-01</code>) and is remembered for <span class="ph">REFERRAL WINDOW, e.g. 30 days</span>.</p></aside>`;}
+
+/* ==== Hong Kong office ==== */
+function hkView(){
+  const open=S.reqs.filter(r=>r.status==="requested"), rest=S.reqs.filter(r=>r.status!=="requested");
+  return `<div class="grid2"><div class="panel stack">
+    <h2>Order requests · ${HK()}</h2>
+    <p style="color:var(--muted);font-size:.9rem">Only this office can accept an order. Review each request, set the real price, freight and lead time, then confirm and invoice. You can also decline.</p>
+    ${open.length?open.map(hkCard).join(""):`<p class="empty">No new requests. Switch to the customer view and send one.</p>`}
+    ${rest.length?`<h3 style="margin-top:6px">Earlier</h3>${rest.map(hkDone).join("")}`:""}
+  </div><aside class="panel stack"><h3>Why Hong Kong does this step</h3>
+    <p class="why" style="border:0;padding:0">The tax risk is a referrer who closes deals, or does the main work while Hong Kong just signs off. So the decisions that make a contract live here: final price, freight, lead time, accept or decline. Change something real when it needs it rather than auto-approving.</p>
+    <p class="why">The invoice, the terms and the bank account are all Hong Kong's. Commission is only marked paid after the customer has paid Hong Kong.</p></aside></div>`;
+}
+function hkCard(r){const p=byId(r.piece);return `<div class="req">
+  <div class="req-top"><div><b>${r.id} · The ${p.name}</b> <span style="color:var(--muted)">${p.code}</span><div class="meta"><span>${esc(r.customer)}</span><span>Postcode ${esc(r.postcode)}</span><span>Referral ${esc(r.ref||"none")}</span><span>${r.at}</span></div></div><span class="status s-requested">${LABEL.requested}</span></div>
+  <div class="hkform" data-form="${r.id}">
+    <label>Price (AUD)<input type="number" min="0" step="1" id="p-${r.id}" placeholder="e.g. 1290"></label>
+    <label>Freight (AUD)<input type="number" min="0" step="1" id="fr-${r.id}" placeholder="0 if pickup"></label>
+    <label>Lead time<select id="l-${r.id}"><option>Pickup now</option><option>2 weeks</option><option>4 weeks</option><option>Next shipment</option></select></label>
+    <div class="acts"><button class="btn hk small" data-confirm="${r.id}">Confirm and send invoice</button><button class="btn small" data-decline="${r.id}">Decline</button></div>
+    <p class="msg" id="m-${r.id}" role="status" style="grid-column:1/-1"></p>
+  </div></div>`;}
+function hkDone(r){const p=byId(r.piece);return `<div class="req"><div class="req-top"><div><b>${r.id} · The ${p.name}</b><div class="meta"><span>${esc(r.customer)}</span>${r.price?`<span>${aud(r.price)} + ${aud(r.freight)} freight</span><span>${esc(r.lead)}</span>`:""}<span>Referral ${esc(r.ref||"none")}</span></div></div><span class="status s-${r.status}">${LABEL[r.status]}</span></div>
+  ${r.status==="confirmed"?`<div><button class="btn small" data-paid="${r.id}">Customer has paid · release commission</button></div>`:""}</div>`;}
+
+/* ==== Referrer ==== */
+function referrerView(){
+  const mine=S.reqs.filter(r=>r.ref===REFERRER.code);
+  const earned=mine.filter(r=>r.status==="confirmed").reduce((a,r)=>a+commission(r),0);
+  const paid=mine.filter(r=>r.status==="paid").reduce((a,r)=>a+commission(r),0);
+  const link=`https://[YOUR-DOMAIN]/?ref=${REFERRER.code}`;
+  return `<div class="grid2"><div class="panel stack">
+    <h2>Hi ${esc(REFERRER.name)}</h2>
+    <div class="linkbox"><code id="refLink">${link}</code><button class="btn small" data-copy="1">Copy link</button></div>
+    <div class="stats"><div class="stat"><b>${mine.length}</b><span>Referred requests</span></div><div class="stat"><b>${aud(earned)}</b><span>Commission due after customer pays</span></div><div class="stat"><b>${aud(paid)}</b><span>Commission paid</span></div></div>
+    <p class="msg" id="copyMsg" role="status"></p>
+    <div class="tablewrap"><table><thead><tr><th>Request</th><th>Vanity</th><th>Status</th><th>Commission</th></tr></thead><tbody>
+      ${mine.length?mine.map(r=>`<tr><td>${r.id}<br><span style="color:var(--muted)">${r.at}</span></td><td>The ${byId(r.piece).name}</td><td><span class="status s-${r.status}">${LABEL[r.status]}</span></td><td class="num">${r.price?aud(commission(r)):"Set when Hong Kong confirms"}</td></tr>`).join(""):`<tr><td colspan="4" class="empty">No referrals yet.</td></tr>`}
+    </tbody></table></div>
+    <p style="font-size:.82rem;color:var(--muted)">Commission rate <span class="ph">COMMISSION % (example 8%)</span> of the price Hong Kong sets, paid by ${HK()} after the customer pays.</p>
+  </div><aside class="stack">
+    <div class="panel stack"><h3>Your role</h3><div class="rules">
+      <div class="can"><b>You can</b><ul><li>Share your link or code</li><li>Show the display pod</li><li>Explain the vanities and specs</li><li>Help fill in the order request</li></ul></div>
+      <div class="cant"><b>You can't</b><ul><li>Set or change prices</li><li>Promise discounts or dates</li><li>Accept or confirm orders</li><li>Take deposits or payments</li></ul></div></div>
+      <p class="why">This portal has no price, accept or payment controls for referrers, so the rules in your agreement are also built into the tools.</p></div>
+    <div class="panel script"><h3>At the pod: what to say</h3>
+      <p><q>I can help you send an order request. The company in Hong Kong confirms your price and freight and invoices you directly.</q></p>
+      <p><q>I'm a referral partner, so I don't handle payments. You'll pay them straight from their invoice.</q></p>
+      <p style="color:var(--muted)">Avoid: "I'll do you a deal", "pay me the deposit", "it's yours".</p></div>
+  </aside></div>`;
+}
+
+/* ==== Events ==== */
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-role],[data-role-go],[data-pick],[data-new],[data-confirm],[data-decline],[data-paid],[data-copy]"); if(!t) return;
+  const d=t.dataset;
+  if(d.role||d.roleGo){S.role=d.role||d.roleGo; render(); window.scrollTo({top:0,behavior:"smooth"}); return;}
+  if(d.pick){S.pick=d.pick; render(); return;}
+  if(d.new){S.lastSent=null; render(); return;}
+  if(d.confirm){const r=S.reqs.find(x=>x.id===d.confirm), price=+$("#p-"+r.id).value, fr=+($("#fr-"+r.id).value||0);
+    if(!price){$("#m-"+r.id).textContent="Set the price before confirming. Hong Kong decides the final price.";return;}
+    Object.assign(r,{price,freight:fr,lead:$("#l-"+r.id).value,status:"confirmed",terms:"v1.0"}); render(); return;}
+  if(d.decline){S.reqs.find(x=>x.id===d.decline).status="declined"; render(); return;}
+  if(d.paid){S.reqs.find(x=>x.id===d.paid).status="paid"; render(); return;}
+  if(d.copy){const txt=$("#refLink").textContent, m=$("#copyMsg");
+    try{navigator.clipboard.writeText(txt).then(()=>m.textContent="Link copied.",()=>{m.textContent="Select the link above to copy it.";});}catch(err){m.textContent="Select the link above to copy it.";}}
+});
+document.addEventListener("submit",e=>{
+  if(e.target.id!=="custForm") return; e.preventDefault();
+  const name=$("#c-name").value.trim(), email=$("#c-email").value.trim(), post=$("#c-post").value.trim(), m=$("#c-msg");
+  if(!name||!/.+@.+\..+/.test(email)){m.textContent="Add your name and a valid email.";return;}
+  if(!/^\d{4}$/.test(post)){m.textContent="Add a 4-digit postcode so Hong Kong can quote freight.";return;}
+  if(!$("#c-agree").checked){m.textContent="Tick the box to confirm who you're buying from.";return;}
+  const id="R-"+(S.seq++);
+  S.reqs.unshift({id,piece:S.pick,customer:name,postcode:post,ref:$("#c-ref").value.trim(),status:"requested",price:0,freight:0,lead:"",terms:"",at:"Today"});
+  S.lastSent=id; render();
+});
+$("#resetBtn").onclick=()=>{S={role:"customer",reqs:SEED(),pick:PIECES[0].id,lastSent:null,seq:1043}; render();};
+render();
+</script>
+</body></html>

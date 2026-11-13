@@ -1,0 +1,623 @@
+<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Basin &amp; Board Collection</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: a gallery, not a shop. Exhibition intro + lead piece, wall of pieces in a masonry hang with museum-style labels, a full-screen viewer per piece, "In situ" video reels, and a quiet enquiry. No prices, carts or badges. */
+:root{
+  --bg:#faf8f4; --wall:#ffffff; --sand:#ece5da; --ink:#26231f; --muted:#776f64; --line:#e4ddd1;
+  --olive:#3f5a3c; --olive-ink:#ffffff; --brass:#b08a4a; --ph:#b5651d; --hero:#cfd8c6; --veil:rgba(250,248,244,.97);
+  --display:"Bricolage Grotesque", "Trebuchet MS", sans-serif; --body:"Figtree", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#171613; --wall:#1d1b18; --sand:#2a2722; --ink:#f1ece3; --muted:#a9a093; --line:#34302a;
+  --olive:#9cbf96; --olive-ink:#142012; --brass:#d4b072; --ph:#e09a52; --hero:#2c3529; --veil:rgba(23,22,19,.97); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#171613; --wall:#1d1b18; --sand:#2a2722; --ink:#f1ece3; --muted:#a9a093; --line:#34302a;
+  --olive:#9cbf96; --olive-ink:#142012; --brass:#d4b072; --ph:#e09a52; --hero:#2c3529; --veil:rgba(23,22,19,.97); color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.65 var(--body);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+body.noscroll{overflow:hidden}
+.wrap{max-width:1360px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:500;line-height:1.05;text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(2.6rem,7vw,6rem)}
+h2{font-size:clamp(1.8rem,3.4vw,2.8rem)}
+h3{font-size:1.15rem;letter-spacing:-.01em}
+p{margin:0}
+a{color:inherit}
+.label{font:600 .68rem var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.ph{font:600 .8em var(--body);color:var(--ph);border:1px dashed var(--ph);border-radius:4px;padding:0 .35em;white-space:nowrap;letter-spacing:0;text-transform:none}
+.btn{font:600 .9rem var(--body);border-radius:999px;padding:.8em 1.5em;border:1.5px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:.5em}
+.btn.ink{background:var(--ink);color:var(--bg)}
+.tlink{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+:is(a,button,input,select,textarea):focus-visible{outline:2px solid var(--olive);outline-offset:3px}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px)}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:18px}
+.logo{font-family:var(--display);font-weight:700;font-size:1.5rem;letter-spacing:-.03em;text-decoration:none}
+.logo i{font-style:normal;color:var(--brass)}
+header nav{display:flex;gap:28px;font-size:.92rem}
+header nav a{text-decoration:none;color:var(--muted)}
+header nav a:hover{color:var(--ink)}
+@media (max-width:520px){header nav{gap:14px;font-size:.84rem}.logo{font-size:1.25rem}}
+@media (max-width:380px){header nav a[href="#insitu"]{display:none}}
+
+/* intro */
+.intro{display:grid;grid-template-columns:1fr auto;gap:24px 40px;align-items:end;padding-block:clamp(40px,7vw,96px) clamp(28px,4vw,48px)}
+.intro p{color:var(--muted);max-width:44ch;font-size:1.05rem}
+.intro .meta{display:grid;gap:4px;text-align:right}
+@media (max-width:760px){.intro{grid-template-columns:1fr}.intro .meta{text-align:left}}
+
+.lead{display:block;width:100%;border:0;padding:0;background:var(--wall);cursor:zoom-in;position:relative;overflow:hidden}
+.lead img{display:block;width:100%;height:clamp(320px,62vh,720px);object-fit:cover;transition:transform 1.6s cubic-bezier(.22,.61,.36,1)}
+.lead:hover img{transform:scale(1.02)}
+.wall-label{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:14px 0;border-top:1px solid var(--line);margin-top:14px}
+.wall-label .t{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+
+/* filter */
+.hang-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.views{display:flex;gap:22px;flex-wrap:wrap;font-size:.95rem}
+.views button{background:none;border:0;padding:0 0 4px;font:inherit;color:var(--muted);cursor:pointer;border-bottom:1.5px solid transparent}
+.views button[aria-pressed="true"]{color:var(--ink);border-color:var(--ink)}
+
+section{padding-block:clamp(56px,8vw,104px)}
+
+/* the hang: masonry */
+.hang{columns:3 340px;column-gap:clamp(18px,2.6vw,40px)}
+.piece{break-inside:avoid;margin:0 0 clamp(36px,4.5vw,64px);display:grid;gap:12px}
+.piece[hidden]{display:none}
+.piece .frame{display:block;width:100%;border:0;padding:0;background:var(--wall);cursor:zoom-in;overflow:hidden;position:relative}
+.piece .frame img{display:block;width:100%;height:auto;transition:transform 1.4s cubic-bezier(.22,.61,.36,1),opacity .6s}
+.piece .frame:hover img{transform:scale(1.035)}
+.piece .frame .more{position:absolute;right:10px;bottom:10px;font:600 .66rem var(--body);letter-spacing:.16em;text-transform:uppercase;background:var(--veil);color:var(--ink);padding:5px 9px;opacity:0;transform:translateY(4px);transition:all .4s}
+.piece .frame:hover .more,.piece .frame:focus-visible .more{opacity:1;transform:none}
+.piece .tag{display:grid;grid-template-columns:auto 1fr;gap:2px 14px}
+.piece .no{font:500 .78rem var(--display);color:var(--brass);padding-top:3px}
+.piece .tag h3{grid-column:2}
+.piece .tag p{grid-column:2;font-size:.86rem;color:var(--muted)}
+.fade{animation:fade .7s ease both}
+@keyframes fade{from{opacity:.001;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.basins{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:clamp(20px,2.4vw,36px) clamp(14px,1.8vw,24px)}
+.basin{display:grid;gap:10px;align-content:start;border:0;padding:0;background:none;font:inherit;color:inherit;text-align:left;cursor:zoom-in;min-width:0}
+.basin[hidden]{display:none}
+.basin .bframe{background:var(--wall);aspect-ratio:4/3;display:grid;place-items:center;padding:12%;overflow:hidden;max-width:100%}
+.basin .bframe img{width:100%;height:100%;object-fit:contain;transition:transform 1.2s cubic-bezier(.22,.61,.36,1)}
+.basin:hover .bframe img{transform:scale(1.06)}
+.basin b{font-family:var(--display);font-weight:500;font-size:1rem;word-break:break-word}
+.basin span{font-size:.82rem;color:var(--muted);margin-top:-6px}
+@media (max-width:520px){.basins{grid-template-columns:repeat(2,1fr)}}
+
+/* viewer */
+.viewer{position:fixed;inset:0;z-index:30;background:var(--veil);display:grid;grid-template-columns:1fr minmax(300px,380px);
+  padding:calc(env(safe-area-inset-top,0px)) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+.viewer[hidden]{display:none}
+.v-stage{position:relative;display:grid;grid-template-rows:1fr auto;min-width:0;min-height:0;padding:56px 24px 16px}
+.v-img{display:grid;place-items:center;min-height:0}
+.v-img img{max-width:100%;max-height:calc(100vh - 200px);object-fit:contain;display:block;animation:fade .5s ease both}
+.v-img img.cut{background:var(--wall);padding:6%}
+.v-thumbs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding-top:14px}
+.v-thumbs button{width:64px;height:64px;padding:0;border:1.5px solid transparent;background:var(--wall);cursor:pointer;overflow:hidden;opacity:.6}
+.v-thumbs button[aria-pressed="true"]{border-color:var(--ink);opacity:1}
+.v-thumbs img{width:100%;height:100%;object-fit:cover}
+.v-arrow{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;font-size:1.1rem}
+.v-arrow.prev{left:16px}.v-arrow.next{right:16px}
+.v-side{border-left:1px solid var(--line);padding:56px 28px 28px;overflow-y:auto;display:grid;gap:18px;align-content:start;background:var(--bg)}
+.v-side dl{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:0;font-size:.88rem;border-top:1px solid var(--line);padding-top:16px}
+.v-side dt{color:var(--muted)} .v-side dd{margin:0}
+.v-side .note{font-size:.86rem;background:var(--sand);padding:12px 14px;border-radius:8px}
+.v-side .nav{display:flex;justify-content:space-between;gap:12px;font-size:.88rem;border-top:1px solid var(--line);padding-top:16px}
+.v-close{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));z-index:2;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:1.1rem;cursor:pointer}
+@media (max-width:860px){.viewer{grid-template-columns:1fr;grid-template-rows:auto 1fr;overflow-y:auto}.v-stage{padding:60px 12px 8px}.v-img img{max-height:56vh}.v-side{border-left:0;border-top:1px solid var(--line);overflow:visible}.v-arrow{top:40%}}
+
+.editor{position:fixed;inset:0;z-index:35;background:rgba(20,18,15,.55);display:grid;place-items:center;overflow-y:auto;
+  padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.editor[hidden]{display:none}
+.ed-card{background:var(--bg);width:min(720px,100%);padding:clamp(20px,4vw,36px);display:grid;gap:20px;grid-template-columns:1fr;border-radius:6px;max-height:100%;overflow-y:auto}
+.ed-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.ed-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 18px}
+.ed-grid .full{grid-column:1/-1}
+.ed-actions{display:flex;gap:10px;flex-wrap:wrap}
+.ed-msg{min-height:1.2em;font-size:.9rem;font-weight:600}
+.ed-keep{font-size:.84rem;color:var(--muted)}
+.owner-tools{display:flex;gap:10px;flex-wrap:wrap}
+.owner-tools .btn{padding:.55em 1.1em;font-size:.84rem}
+.custom-badge{font:600 .62rem var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--olive)}
+@media (max-width:560px){.ed-grid{grid-template-columns:1fr}}
+
+/* in situ reels */
+.cnav{display:flex;gap:8px}
+.cnav button{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;font-size:1.1rem}
+.reels{--rw:19%;position:relative;display:flex;gap:14px;overflow:hidden;padding-block:28px 12px;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.reels.dragging{cursor:grabbing}
+.reels::before,.reels::after{content:"";flex:0 0 calc((100% - var(--rw))/2 - 14px)}
+.reel{flex:0 0 var(--rw);display:grid;gap:10px;align-content:start;min-width:0;transform:scale(var(--s,.9));opacity:var(--o,.5);transform-origin:50% 45%;will-change:transform}
+.reel.active{z-index:1}
+.reel .vid{position:relative;aspect-ratio:9/16;overflow:hidden;border:0;padding:0;cursor:pointer;background:var(--sand);width:100%;display:block;-webkit-user-drag:none}
+.reel.active .vid{box-shadow:0 18px 40px -18px rgba(0,0,0,.45)}
+.reel .vid img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;-webkit-user-drag:none}
+.reel .vid::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.55))}
+.reel .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;z-index:1}
+.reel .play svg{width:20px;height:20px;margin-left:3px;fill:#1a1a1a}
+.reel .cap{position:absolute;left:12px;right:12px;bottom:12px;z-index:1;color:#fff;font-size:.82rem;font-weight:600;text-align:left;line-height:1.35}
+.reel .yt{position:absolute;right:10px;top:10px;z-index:1;background:rgba(0,0,0,.55);color:#fff;font-size:.62rem;font-weight:600;letter-spacing:.1em;padding:3px 7px;border-radius:999px}
+.reel .see{background:none;border:0;border-top:1px solid var(--line);padding:10px 0 0;font:inherit;color:inherit;text-align:left;cursor:pointer;display:grid;gap:2px}
+.reel .see b{font-family:var(--display);font-weight:500}
+.reel .see span{font-size:.8rem;color:var(--muted)}
+.reel:not(.active) .see{pointer-events:none}
+@media (max-width:1000px){.reels{--rw:28%}}
+@media (max-width:640px){.reels{--rw:62%}}
+.vmodal{position:fixed;inset:0;z-index:40;background:rgba(10,10,8,.85);display:grid;place-items:center;
+  padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.vframe{height:min(80vh,740px);aspect-ratio:9/16;max-width:calc(100vw - 32px);overflow:hidden;background:#000;position:relative;border-radius:12px}
+.vframe iframe{width:100%;height:100%;border:0;display:block}
+.vframe .none{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#fff;padding:24px;font-size:.9rem;line-height:1.5}
+.vclose{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:calc(16px + env(safe-area-inset-top,0px));width:44px;height:44px;border-radius:50%;border:0;background:#fff;color:#1a1a1a;font-size:1.2rem;cursor:pointer}
+
+/* enquire */
+.enq{display:grid;grid-template-columns:1fr 1.3fr;gap:clamp(32px,6vw,96px);border-top:1px solid var(--line);padding-top:clamp(40px,5vw,64px)}
+.enq .intro2{display:grid;gap:16px;align-content:start}
+.enq .intro2 p{color:var(--muted);max-width:40ch}
+form{display:grid;grid-template-columns:1fr 1fr;gap:22px 20px}
+label.f{display:grid;gap:4px;font-size:.78rem;font-weight:600;color:var(--muted);min-width:0}
+label.f :is(input,select,textarea){font:400 1rem var(--body);padding:.55em 0;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);width:100%;border-radius:0}
+label.f :is(input,select,textarea):focus{outline:none;border-bottom-color:var(--ink)}
+form .full{grid-column:1/-1}
+.sent{grid-column:1/-1;font-weight:600}
+@media (max-width:760px){.enq{grid-template-columns:1fr}form{grid-template-columns:1fr}}
+
+footer{border-top:1px solid var(--line);margin-top:clamp(56px,8vw,104px)}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-block:28px 40px;font-size:.85rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top">basin<i>&amp;</i>board</a>
+    <nav aria-label="Main"><a href="#collection">Collection</a><a href="#basins">Basins</a><a href="#insitu">In situ</a><a href="#enquire">Enquire</a></nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <div class="intro">
+      <div style="display:grid;gap:18px"><span class="label">The 2026 collection</span><h1>Vanities, hung<br>like pieces.</h1><p>Seventeen vanities and a library of basins in timber, stone, lacquer and glass, chosen one by one from the factory floor. Each vanity is named for a Queensland place. Open any piece to see it up close.</p></div>
+      <div class="meta"><span class="label">On show</span><span style="font-family:var(--display);font-size:2.4rem;line-height:1" id="pieceCount">17</span><span class="label">vanities</span><span style="font-family:var(--display);font-size:1.6rem;line-height:1;margin-top:10px" id="basinCount">65</span><span class="label">basins</span></div>
+    </div>
+    <button class="lead" id="leadBtn" aria-label="Open the lead piece"><img id="leadImg" alt=""></button>
+    <div class="wall-label" id="leadLabel"></div>
+  </div>
+
+  <section id="collection"><div class="wrap">
+    <div class="hang-head">
+      <div style="display:grid;gap:12px;justify-items:start"><h2>The collection</h2><button class="btn" id="addBtn" type="button" hidden>+ Add a vanity</button></div>
+      <div class="views" role="group" aria-label="View" id="views"></div>
+    </div>
+    <div class="hang" id="hang"></div>
+  </div></section>
+
+  <section id="basins" style="padding-top:0"><div class="wrap">
+    <div class="hang-head">
+      <div style="display:grid;gap:10px"><span class="label">The basin library</span><h2>Basins</h2><p style="color:var(--muted);max-width:52ch">Every countertop basin and vanity top in the range. Most stone pieces can be made in any colour.</p></div>
+      <div class="views" role="group" aria-label="Basin view" id="bviews"></div>
+    </div>
+    <div class="basins" id="basinGrid"></div>
+  </div></section>
+
+  <section id="insitu" style="padding-top:0"><div class="wrap">
+    <div class="hang-head"><div style="display:grid;gap:10px"><span class="label">In situ</span><h2>Real life renovations</h2></div><div class="cnav"><button type="button" data-vscroll="-1" aria-label="Previous video">←</button><button type="button" data-vscroll="1" aria-label="Next video">→</button></div></div>
+    <div class="reels" id="reels"></div>
+  </div></section>
+
+  <section id="enquire" style="padding-top:0"><div class="wrap enq">
+    <div class="intro2">
+      <span class="label">Enquiries</span>
+      <h2>Ask about a piece</h2>
+      <p>Tell us which piece and where you are. We'll send the price list, sizes, freight to your postcode and the next arrival date.</p>
+      <p style="font-size:.9rem">Call or text <span class="ph">PHONE</span><br>Email <span class="ph">EMAIL</span></p>
+    </div>
+    <form id="form" novalidate>
+      <label class="f">Name<input id="f-name" required autocomplete="name"></label>
+      <label class="f">Email<input id="f-email" type="email" required autocomplete="email"></label>
+      <label class="f full">Piece<select id="f-piece"></select></label>
+      <label class="f">Postcode<input id="f-post" inputmode="numeric" maxlength="4"></label>
+      <label class="f">I'm a<select id="f-type"><option>Homeowner</option><option>Builder or renovator</option><option>Designer</option><option>Tiny home maker</option></select></label>
+      <label class="f full">Message<textarea id="f-msg" rows="2"></textarea></label>
+      <div class="full"><button class="btn ink" type="submit">Send enquiry</button></div>
+      <p class="sent" id="sent" hidden></p>
+    </form>
+  </div></section>
+</main>
+
+<div class="editor" id="editor" hidden role="dialog" aria-modal="true" aria-labelledby="edTitle">
+  <form class="ed-card" id="edForm" novalidate>
+    <div class="ed-head"><h2 id="edTitle">Add a vanity</h2><button type="button" class="v-close" style="position:static" data-edclose="1" aria-label="Close">✕</button></div>
+    <div class="ed-grid">
+      <label class="f">Name<input id="e-name" required placeholder="e.g. Mission Beach"></label>
+      <label class="f">Factory code<input id="e-code" required placeholder="e.g. KL813019-120"></label>
+      <label class="f full">Short description<input id="e-desc" placeholder="e.g. Acacia three-drawer"></label>
+      <label class="f">Cabinet size<input id="e-cabinet" placeholder="1200 × 460 × 415 mm"></label>
+      <label class="f">Mounting<select id="e-mount"><option>Wall-hung</option><option>Floor-standing</option><option>Freestanding pedestal</option></select></label>
+      <label class="f">Finish<input id="e-finish" placeholder="Acacia lacquer, fluted"></label>
+      <label class="f">Look<select id="e-tone"><option value="light">Light timber</option><option value="dark">Dark timber</option><option value="painted">Painted</option></select></label>
+      <label class="f">Material<input id="e-material" placeholder="Plywood and solid wood"></label>
+      <label class="f">Storage<input id="e-structure" placeholder="Three drawers, push-open"></label>
+      <label class="f full">Top &amp; basin<input id="e-top" placeholder="Sintered stone top, ceramic basin"></label>
+      <label class="f full">Paired mirror<input id="e-mirror" placeholder="LED mirror, 450 × 900 mm"></label>
+      <label class="f full" id="e-photos-wrap">Photos (first one is the main image)<input id="e-photos" type="file" accept="image/png,image/jpeg,image/webp" multiple></label>
+      <p class="full ed-keep" id="e-keep" hidden></p>
+    </div>
+    <p class="ed-msg" id="edMsg" role="status"></p>
+    <div class="ed-actions"><button class="btn ink" type="submit" id="edSave">Save vanity</button><button class="btn" type="button" data-edclose="1">Cancel</button></div>
+  </form>
+</div>
+
+<div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-label="Piece viewer">
+  <button class="v-close" data-vclose-piece="1" aria-label="Close">✕</button>
+  <div class="v-stage">
+    <div class="v-img" id="vImg"></div>
+    <div class="v-thumbs" id="vThumbs"></div>
+    <button class="v-arrow prev" data-vimg="-1" aria-label="Previous image">←</button>
+    <button class="v-arrow next" data-vimg="1" aria-label="Next image">→</button>
+  </div>
+  <aside class="v-side" id="vSide"></aside>
+</div>
+
+<footer><div class="wrap">
+  <span>basin &amp; board <span class="ph">WORKING NAME</span> · Supply only · Pickup Rockhampton &amp; Brisbane <span class="ph">CONFIRM</span></span>
+  <span>ABN <span class="ph">ABN</span> · Images courtesy of the manufacturer <span class="ph">CONFIRM PERMISSION</span></span>
+</div></footer>
+
+<script>
+/* ==== IMAGES (generated from the SHKL 2026 catalogue) ==== [file, width, height, isCutout] */
+const IMG={"as813109-120":[["img/as813109-120-1.webp",1800,1800,0],["img/as813109-120-2.webp",944,944,0],["img/as813109-120-3.webp",1139,1139,0],["img/as813109-120-4.webp",242,333,1]],"as813046a-100":[["img/as813046a-100-1.webp",1800,1200,0],["img/as813046a-100-2.webp",1300,867,0],["img/as813046a-100-3.webp",1114,1114,0],["img/as813046a-100-4.webp",893,893,1]],"as813046c-100":[["img/as813046c-100-1.webp",1800,1200,0],["img/as813046c-100-2.webp",1300,853,0],["img/as813046c-100-3.webp",1300,923,0],["img/as813046c-100-4.webp",217,446,1]],"as813050a-120":[["img/as813050a-120-1.webp",1800,1200,0],["img/as813050a-120-2.webp",1300,1300,0],["img/as813050a-120-3.webp",1300,1300,0],["img/as813050a-120-4.webp",848,565,0]],"as813050b-100":[["img/as813050b-100-1.webp",1800,1200,0]],"as813117":[["img/as813117-1.webp",1800,1800,0],["img/as813117-2.webp",1300,1300,0],["img/as813117-3.webp",1283,1283,0]],"as813045-90":[["img/as813045-90-1.webp",1800,1280,0],["img/as813045-90-2.webp",1030,733,0],["img/as813045-90-3.webp",1041,730,0],["img/as813045-90-4.webp",274,473,1]],"kl813019-100":[["img/kl813019-100-1.webp",1800,1200,0],["img/kl813019-100-2.webp",954,636,0],["img/kl813019-100-3.webp",1234,823,0],["img/kl813019-100-4.webp",287,428,1]],"kl813001a-120":[["img/kl813001a-120-1.webp",1364,909,0]],"kl813003-100":[["img/kl813003-100-1.webp",1800,1185,0],["img/kl813003-100-2.webp",1100,733,0],["img/kl813003-100-3.webp",1170,779,0],["img/kl813003-100-4.webp",289,411,1]],"kl813027a-120":[["img/kl813027a-120-1.webp",1662,1107,0]],"kl813024-120":[["img/kl813024-120-1.webp",1622,1800,0],["img/kl813024-120-2.webp",387,424,0]],"kl810971-150":[["img/kl810971-150-1.webp",1800,1173,0],["img/kl810971-150-2.webp",1101,933,0],["img/kl810971-150-3.webp",1083,866,0],["img/kl810971-150-4.webp",650,421,0]],"as810879a-90":[["img/as810879a-90-1.webp",1800,1713,0],["img/as810879a-90-2.webp",382,602,0]],"as810879b-90":[["img/as810879b-90-1.webp",1312,1800,0],["img/as810879b-90-2.webp",575,906,0]],"kl813023a":[["img/kl813023a-1.webp",1321,1800,0],["img/kl813023a-2.webp",1097,680,0],["img/kl813023a-3.webp",1058,1300,0],["img/kl813023a-4.webp",341,551,1]],"kl810892a-80":[["img/kl810892a-80-1.webp",1800,1080,0],["img/kl810892a-80-2.webp",387,613,0]],"as003":[["img/as003-1.webp",438,200,0]]};
+
+/* ==== THE COLLECTION: specs from the SHKL 2026 catalogue ====
+   tone drives the view filter: "light" timber, "dark" timber, "painted". Names are working names. */
+const PIECES=[
+  {id:"as813109-120",code:"AS813109-120",name:"Terrazzo Oval",tone:"light",mount:"Wall-hung",cabinet:"1200 × 470 × 418 mm",finish:"Warm Mist Brown lacquer, fluted",material:"Plywood and solid wood",structure:"Two side drawers, an outer drawer and an inner drawer, finger-pull",top:"Kanis terrazzo top, matt white solid-surface basin",mirror:"AS913109-120 mirror cabinet, 1200 × 750 mm"},
+  {id:"as813046a-100",code:"AS813046A-100",name:"Acacia Curve",tone:"light",mount:"Wall-hung",cabinet:"1010 × 510 × 375 mm",finish:"Acacia lacquer and melamine, fluted",material:"Plywood and solid wood",structure:"Two push-open side doors, centre drawer",top:"Integrated glossy ceramic or sintered stone basin",mirror:"AS913046A LED mirror, 500 × 850 mm"},
+  {id:"kl813024-120",code:"KL813024-120",name:"Walnut & Black Stone",tone:"dark",mount:"Wall-hung",cabinet:"1200 × 469 × 412 mm",finish:"Ancora Walnut melamine",material:"Plywood",structure:"Two doors and one drawer, push-open",top:"Munich black sintered stone top, matt black basin",mirror:"KL913024A LED mirror, 490 × 900 mm"},
+  {id:"as813117",code:"AS813117",name:"Fluted Pedestal",tone:"light",mount:"Freestanding pedestal",cabinet:"600 × 410 × 900 mm",finish:"Warm Mist Brown lacquer, fluted",material:"Plywood and solid wood",structure:"One door with shelf, push-open",top:"Integrated matt white solid-surface basin",mirror:"AS913117 timber-framed mirror, 400 × 900 mm"},
+  {id:"kl810971-150",code:"KL810971-150",name:"Carrara Double",tone:"light",mount:"Wall-hung",cabinet:"1500 × 480 × 462 mm",finish:"Acacia lacquer and melamine, fluted",material:"Plywood and solid wood",structure:"Two drawers, black metal handles",top:"Carrara sintered stone top, two ceramic basins",mirror:"KL910971 LED mirror cabinet, 450 × 900 mm"},
+  {id:"as813046c-100",code:"AS813046C-100",name:"Walnut Curve Floor",tone:"light",mount:"Floor-standing",cabinet:"1010 × 510 × 890 mm",finish:"Walnut lacquer and melamine, fluted",material:"Plywood and solid wood",structure:"Two push-open side doors, centre door",top:"Integrated sintered stone basin",mirror:"AS913046C LED mirror, 900 × 900 mm"},
+  {id:"kl813023a",code:"KL813023A",name:"Bruce Blue Classic",tone:"painted",mount:"Floor-standing",cabinet:"1200 × 559 × 870 mm",finish:"Bruce Blue lacquer",material:"Plywood and HDF",structure:"Two drawers and two doors, gold handles",top:"Shown with white quartz top and undermount basin",mirror:"KL913023A mirror, 800 × 900 mm",note:"You've picked this with the AS003 sintered stone basin top. That top is 500 mm deep and this cabinet is 559 mm deep, so confirm a custom depth with the factory first."},
+  {id:"as813045-90",code:"AS813045-90",name:"Khaki Ribbed",tone:"painted",mount:"Wall-hung",cabinet:"910 × 465 × 520 mm",finish:"Khaki Grey lacquer, ribbed",material:"Plywood and HDF",structure:"Two drawers, timber handles",top:"Integrated matt white ceramic basin",mirror:"AS913045 LED mirror cabinet, 500 × 900 mm"},
+  {id:"kl813003-100",code:"KL813003-100",name:"Acacia Two-Drawer",tone:"light",mount:"Wall-hung",cabinet:"1000 × 520 × 510 mm",finish:"Acacia melamine and lacquer, fluted",material:"Plywood and solid wood",structure:"Two drawers, hidden 45° handles",top:"Integrated sintered stone basin",mirror:"KL913003 LED mirror, 1000 × 700 mm"},
+  {id:"kl810892a-80",code:"KL810892A-80",name:"Country Green Diamond",tone:"painted",mount:"Wall-hung",cabinet:"810 × 460 × 538 mm",finish:"Country Green lacquer, diamond pattern",material:"HDF",structure:"Two drawers, black metal handles",top:"Integrated matt black ceramic basin",mirror:"KL910767C-70 round LED mirror, 700 mm"},
+  {id:"as813050a-120",code:"AS813050A-120",name:"Mist Fluted Double",tone:"light",mount:"Wall-hung",cabinet:"1205 × 460 × 410 mm",finish:"Warm Mist Brown lacquer, fluted",material:"Plywood and solid wood",structure:"Two drawers, gold metal handles",top:"Integrated glossy ceramic basin",mirror:"AS913050-120 LED mirror, 1200 × 600 mm"},
+  {id:"kl813027a-120",code:"KL813027A-120",name:"Munich Black Four-Drawer",tone:"dark",mount:"Wall-hung",cabinet:"1200 × 460 × 512 mm",finish:"Munich Black melamine and lacquer",material:"Plywood and solid wood",structure:"Four drawers, finger-pull",top:"White sintered stone top, two ceramic basins",mirror:"KL913027 LED mirrors, 450 × 900 mm"},
+  {id:"as810879a-90",code:"AS810879A-90",name:"Walnut Float",tone:"light",mount:"Wall-hung",cabinet:"900 × 450 × 362 mm",finish:"Walnut lacquer and melamine, fluted",material:"Plywood and solid wood",structure:"One push-open drawer",top:"White sintered stone top, ceramic basin",mirror:"KL910879 LED mirror, 450 × 900 mm"},
+  {id:"as810879b-90",code:"AS810879B-90",name:"White Float",tone:"painted",mount:"Wall-hung",cabinet:"900 × 450 × 362 mm",finish:"Matt White melamine and lacquer, fluted",material:"Plywood and HDF",structure:"One push-open drawer",top:"White sintered stone top, ceramic basin",mirror:"KL910879 LED mirror, 450 × 900 mm"},
+  {id:"kl813019-100",code:"KL813019-100",name:"Acacia Three-Drawer",tone:"light",mount:"Wall-hung",cabinet:"1000 × 460 × 415 mm",finish:"Acacia lacquer and melamine, fluted",material:"Plywood and solid wood",structure:"Three drawers, hidden 45° handles",top:"Integrated Volakas white sintered stone basin",mirror:"KL913019 LED mirror, 450 × 900 mm"},
+  {id:"kl813001a-120",code:"KL813001A-120",name:"Ancora Walnut Console",tone:"dark",mount:"Wall-hung",cabinet:"1200 × 469 × 412 mm",finish:"Ancora Walnut melamine and lacquer, fluted",material:"Plywood and solid wood",structure:"Centre drawer and two side doors, push-open",top:"White sintered stone top, ceramic basin",mirror:"KL913001A timber-framed LED mirror, 490 × 860 mm"},
+  {id:"as813050b-100",code:"AS813050B-100",name:"Dark Walnut Fluted",tone:"dark",mount:"Wall-hung",cabinet:"1005 × 460 × 410 mm",finish:"Ancora Walnut lacquer and melamine, fluted",material:"Plywood and solid wood",structure:"One drawer, gold metal handle",top:"Integrated glossy ceramic basin",mirror:"AS913050-100 LED mirror, 1000 × 600 mm"},
+];
+/* catchy names: Queensland places. Change freely; desc stays as the plain description. */
+const NAMES={"as813109-120":"Noosa","as813046a-100":"Byron","kl813024-120":"Daintree","as813117":"Yamba","kl810971-150":"Whitsunday","as813046c-100":"Kuranda","kl813023a":"Hamilton","as813045-90":"Coolum","kl813003-100":"Agnes","kl810892a-80":"Eumundi","as813050a-120":"Peregian","kl813027a-120":"Glasshouse","as810879a-90":"Emu Park","as810879b-90":"Yeppoon","kl813019-100":"Capricorn","kl813001a-120":"Carnarvon","as813050b-100":"Fitzroy"};
+PIECES.forEach(p=>{p.desc=p.name; p.name=NAMES[p.id]||p.name;});
+const BASINS=[{"code":"WA38","kind":"counter","size":"460 × 255 × 120 mm","internal":"","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-79-00-wa38.webp","w":405,"h":278},{"code":"WB57","kind":"counter","size":"410 × 410 × 155 mm","internal":"","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-79-01-wb57.webp","w":488,"h":382},{"code":"WB45","kind":"counter","size":"400 × 400 × 120 mm","internal":"","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-79-02-wb45.webp","w":355,"h":309},{"code":"WB17","kind":"counter","size":"600 × 400 × 130 mm","internal":"","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-79-03-wb17.webp","w":430,"h":324},{"code":"WB57-1","kind":"counter","size":"600 × 410 × 132 mm","internal":"","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-79-04-wb57-1.webp","w":463,"h":330},{"code":"WB58","kind":"counter","size":"370 × 370 × 125 mm","internal":"","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-79-05-wb58.webp","w":413,"h":336},{"code":"WA39","kind":"counter","size":"460 × 280 × 170 mm","internal":"","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-79-06-wa39.webp","w":396,"h":291},{"code":"WB58","kind":"counter","size":"580 × 380 × 110 mm","internal":"","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-79-07-wb58.webp","w":369,"h":261},{"code":"LB-610","kind":"counter","size":"400 × 300 × 140 mm","internal":"","mat":"Artificial stone","color":"Matt White","custom":true,"img":"img/b-79-08-lb-610.webp","w":446,"h":309},{"code":"WB14","kind":"counter","size":"535 × 345 × 115 mm","internal":"","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-79-09-wb14.webp","w":417,"h":290},{"code":"KL78610","kind":"counter","size":"413 × 368 × 117 mm","internal":"","mat":"Ceramic","color":"Gloss White","custom":false,"img":"img/b-79-10-kl78610.webp","w":478,"h":477},{"code":"KL78607","kind":"counter","size":"575 × 360 × 116 mm","internal":"","mat":"Ceramic","color":"Gloss White","custom":false,"img":"img/b-79-11-kl78607.webp","w":467,"h":467},{"code":"KL110A","kind":"counter","size":"352 × 352 × 115 mm","internal":"","mat":"Ceramic","color":"Gloss White","custom":false,"img":"img/b-80-12-kl110a.webp","w":553,"h":553},{"code":"KL78435","kind":"counter","size":"360 × 360 × 120 mm","internal":"","mat":"Ceramic","color":"Gloss White","custom":false,"img":"img/b-80-13-kl78435.webp","w":564,"h":538},{"code":"78330-MB","kind":"counter","size":"525 × 300 × 115 mm","internal":"","mat":"Ceramic","color":"Matt White","custom":false,"img":"img/b-80-14-78330-mb.webp","w":551,"h":551},{"code":"9048EY","kind":"counter","size":"410 × 220 × 100 mm","internal":"","mat":"Ceramic","color":"Gloss White","custom":false,"img":"img/b-80-15-9048ey.webp","w":534,"h":534},{"code":"KL103CCMB","kind":"counter","size":"358 × 358 × 137 mm","internal":"","mat":"Ceramic","color":"Matt Black","custom":false,"img":"img/b-80-16-kl103ccmb.webp","w":599,"h":550},{"code":"N113MBY-3","kind":"counter","size":"360 × 360 × 120 mm","internal":"","mat":"Ceramic","color":"Marble Black","custom":false,"img":"img/b-80-17-n113mby-3.webp","w":496,"h":496},{"code":"KL110C","kind":"counter","size":"394 × 394 × 115 mm","internal":"","mat":"Ceramic","color":"Gloss White","custom":false,"img":"img/b-80-18-kl110c.webp","w":510,"h":503},{"code":"KL78728MW","kind":"counter","size":"360 × 360 × 115 mm","internal":"","mat":"Ceramic","color":"Matt White","custom":false,"img":"img/b-80-19-kl78728mw.webp","w":463,"h":452},{"code":"KL78570B","kind":"counter","size":"450 × 320 × 110 mm","internal":"","mat":"Ceramic","color":"Gloss White","custom":false,"img":"img/b-80-20-kl78570b.webp","w":544,"h":530},{"code":"78607X","kind":"counter","size":"490 × 313 × 127 mm","internal":"","mat":"Ceramic","color":"Gloss White","custom":false,"img":"img/b-80-21-78607x.webp","w":505,"h":505},{"code":"ENTA-50","kind":"top","size":"510 × 465 × 170 mm","internal":"350 × 260 mm","mat":"Ceramic","color":"Gloss/Matt White","custom":false,"img":"img/b-81-22-enta-50.webp","w":434,"h":347},{"code":"ENTA-70","kind":"top","size":"710 × 465 × 170 mm","internal":"490 × 280 mm","mat":"Ceramic","color":"Gloss/Matt White","custom":false,"img":"img/b-81-23-enta-70.webp","w":492,"h":365},{"code":"ENTA-90","kind":"top","size":"910 × 465 × 170 mm","internal":"550 × 280 mm","mat":"Ceramic","color":"Gloss/Matt White","custom":false,"img":"img/b-81-24-enta-90.webp","w":549,"h":362},{"code":"ENTA-100/100L/R","kind":"top","size":"1010 × 465 × 170 mm","internal":"535 × 270 mm","mat":"Ceramic","color":"Gloss/Matt White","custom":false,"img":"img/b-81-25-enta-100-100l-r.webp","w":521,"h":350},{"code":"ENTA-75","kind":"top","size":"760 × 465 × 170 mm","internal":"470 × 270 mm","mat":"Ceramic","color":"Gloss/Matt White","custom":false,"img":"img/b-81-26-enta-75.webp","w":459,"h":337},{"code":"ENTA-120","kind":"top","size":"1210 × 465 × 170 mm","internal":"550 × 270 mm","mat":"Ceramic","color":"Gloss/Matt White","custom":false,"img":"img/b-81-27-enta-120.webp","w":542,"h":355},{"code":"ENTA-120D","kind":"top","size":"1210 × 465 × 170 mm","internal":"435 × 280 mm","mat":"Ceramic","color":"Gloss/Matt White","custom":false,"img":"img/b-81-28-enta-120d.webp","w":517,"h":336},{"code":"ENTA-55","kind":"top","size":"560 × 465 × 170 mm","internal":"400 × 260 mm","mat":"Ceramic","color":"Gloss/Matt White","custom":false,"img":"img/b-81-29-enta-55.webp","w":425,"h":331},{"code":"ENTA-120L/R","kind":"top","size":"1210 × 465 × 170 mm","internal":"535 × 280 mm","mat":"Ceramic","color":"Gloss/Matt White","custom":false,"img":"img/b-81-30-enta-120l-r.webp","w":534,"h":367},{"code":"ENTA-140D/150D","kind":"top","size":"1410 × 465 × 170 mm","internal":"435 × 270 mm","mat":"Ceramic","color":"Gloss/Matt White","custom":false,"img":"img/b-81-31-enta-140d-150d.webp","w":534,"h":334},{"code":"ENTA-60","kind":"top","size":"610 × 465 × 170 mm","internal":"450 × 275 mm","mat":"Ceramic","color":"Gloss/Matt White","custom":false,"img":"img/b-81-32-enta-60.webp","w":444,"h":327},{"code":"ENTA-80","kind":"top","size":"810 × 465 × 170 mm","internal":"485 × 270 mm","mat":"Ceramic","color":"Gloss/Matt White","custom":false,"img":"img/b-81-33-enta-80.webp","w":480,"h":340},{"code":"78857-30","kind":"top","size":"462 × 306 × 50 mm","internal":"328 × 287 mm","mat":"Ceramic","color":"Gloss White","custom":false,"img":"img/b-82-34-78857-30.webp","w":478,"h":322},{"code":"T-120/140/150/160","kind":"top","size":"1210/1410/1510/1610 × 510 × 170 mm","internal":"660 × 340 mm","mat":"Ceramic","color":"Gloss White","custom":false,"img":"img/b-82-35-t-120-140-150-160.webp","w":499,"h":201},{"code":"TT-140/150/160","kind":"top","size":"1410/1510/1610 × 510 × 170 mm","internal":"480 × 310 mm","mat":"Ceramic","color":"Gloss White","custom":false,"img":"img/b-82-36-tt-140-150-160.webp","w":588,"h":236},{"code":"78857-50/60/75/80/90/100","kind":"top","size":"605/755/805/905/1005 × 463 × 50 mm","internal":"","mat":"Ceramic","color":"Gloss White","custom":false,"img":"img/b-82-37-78857-50-60-75-80-90-100.webp","w":542,"h":316},{"code":"PB20130-60/75/80/90/100/120/150","kind":"top","size":"600/750/800/900/1000/1200/1500 × 460 × 150 mm","internal":"500 × 280 mm","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-82-38-pb20130-60-75-80-90-100-120-150.webp","w":728,"h":264},{"code":"PB20130-120D/150D/180D","kind":"top","size":"1200/1500/1800 × 460 × 150 mm","internal":"500 × 280 mm","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-82-39-pb20130-120d-150d-180d.webp","w":760,"h":268},{"code":"78857-120","kind":"top","size":"1205 × 463 × 50 mm","internal":"","mat":"Ceramic","color":"Gloss White","custom":false,"img":"img/b-82-40-78857-120.webp","w":571,"h":346},{"code":"9595BX-60/80/100","kind":"top","size":"607/807/1005 × 460 × 65 mm","internal":"","mat":"Ceramic","color":"Gloss White","custom":false,"img":"img/b-82-41-9595bx-60-80-100.webp","w":567,"h":358},{"code":"CA22-60/75","kind":"top","size":"600/750 × 460 × 150 mm","internal":"380 × 280 mm","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-82-42-ca22-60-75.webp","w":476,"h":220},{"code":"CA35-90/100","kind":"top","size":"900/1000 × 500 × 160 mm","internal":"480 × 335 mm","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-82-43-ca35-90-100.webp","w":488,"h":220},{"code":"9595BX-120","kind":"top","size":"1210 × 460 × 65 mm","internal":"","mat":"Ceramic","color":"Gloss White","custom":false,"img":"img/b-82-44-9595bx-120.webp","w":542,"h":294},{"code":"CA36-120/150","kind":"top","size":"1200/1500 × 500 × 160 mm","internal":"780 × 335 mm","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-83-45-ca36-120-150.webp","w":459,"h":188},{"code":"ST-60/75/80/90/100/120","kind":"top","size":"600/750/800/900/1000/1200 × 476 × 102 mm","internal":"531 × 273 mm","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-83-46-st-60-75-80-90-100-120.webp","w":600,"h":281},{"code":"MA02-150","kind":"top","size":"1510 × 461 × 115 mm","internal":"1306 × 328 mm","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-83-47-ma02-150.webp","w":455,"h":209},{"code":"CA32-60/75/80/90/100","kind":"top","size":"600/750/800/900/1000 × 460 × 80 mm","internal":"509 × 329 mm","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-83-48-ca32-60-75-80-90-100.webp","w":463,"h":222},{"code":"CA34-75/80/90/120/150","kind":"top","size":"750/800/900/1200/1500 × 500 × 160 mm","internal":"600 × 335 mm","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-83-49-ca34-75-80-90-120-150.webp","w":444,"h":191},{"code":"CA19-90/120/140","kind":"top","size":"900/1200/1400 × 500 × 175 mm","internal":"450 × 300 mm","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-83-50-ca19-90-120-140.webp","w":446,"h":193},{"code":"CA32-120/150","kind":"top","size":"1200/1500 × 460 × 80 mm","internal":"600 × 329 mm","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-83-51-ca32-120-150.webp","w":467,"h":212},{"code":"CA32-150D","kind":"top","size":"1500 × 460 × 80 mm","internal":"509 × 329 mm","mat":"Solid surface","color":"Matt White AS003-150D/180D","custom":true,"img":"img/b-83-52-ca32-150d.webp","w":467,"h":199},{"code":"CA37-60/75/80/90/100","kind":"top","size":"600/750/800/900/1000 × 460 × 120 mm","internal":"","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-83-53-ca37-60-75-80-90-100.webp","w":411,"h":235},{"code":"CA37-120/150","kind":"top","size":"1200/1500 × 460 × 120 mm","internal":"","mat":"Solid surface","color":"Matt White","custom":true,"img":"img/b-83-54-ca37-120-150.webp","w":500,"h":252},{"code":"AS003-75/80/90/100/120","kind":"top","size":"750/800/900/1000/1200 × 500 × 160 mm","internal":"550 × 350 mm","mat":"Sintered stone","color":"Volakas white","custom":false,"img":"img/b-83-55-as003-75-80-90-100-120.webp","w":438,"h":200},{"code":"AS003-150D/180D","kind":"top","size":"1500/1800 × 500 × 160 mm","internal":"550 × 350 mm","mat":"Sintered stone","color":"Volakas white","custom":false,"img":"img/b-83-56-as003-150d-180d.webp","w":501,"h":201},{"code":"AS047-75/80/90/100/120","kind":"top","size":"750/800/900/1000/1200 × 500 × 118 mm","internal":"500 × 350 mm","mat":"Sintered stone","color":"Roman Seal","custom":false,"img":"img/b-84-57-as047-75-80-90-100-120.webp","w":492,"h":252},{"code":"AS047-150","kind":"top","size":"1500 × 500 × 118 mm","internal":"500 × 350 mm","mat":"Sintered stone","color":"Roman Seal","custom":false,"img":"img/b-84-58-as047-150.webp","w":496,"h":234},{"code":"AS019-75/80/90/100/120","kind":"top","size":"750/800/900/1000/1200 × 460 × 150 mm","internal":"460 × 305 mm","mat":"Sintered stone","color":"Volakas white","custom":false,"img":"img/b-84-60-as019-75-80-90-100-120.webp","w":517,"h":215},{"code":"AS019-150D/180D","kind":"top","size":"1500/1800 × 460 × 150 mm","internal":"460 × 305 mm","mat":"Sintered stone","color":"Volakas white","custom":false,"img":"img/b-84-61-as019-150d-180d.webp","w":563,"h":219},{"code":"AS049","kind":"top","size":"450 × 450 × 140 mm","internal":"300 × 300 mm","mat":"Sintered stone","color":"Roman Seal","custom":false,"img":"img/b-84-62-as049.webp","w":342,"h":206},{"code":"AS046-75/80/90/100/120","kind":"top","size":"760/810/910/1010/1210 × 510 × 160 mm","internal":"600 × 350 mm","mat":"Sintered stone","color":"Roman Seal","custom":false,"img":"img/b-84-63-as046-75-80-90-100-120.webp","w":455,"h":192},{"code":"AS046-140/150/160/180","kind":"top","size":"1410/1510/1610/1810 × 510 × 160 mm","internal":"700 × 350 mm","mat":"Sintered stone","color":"Roman Seal","custom":false,"img":"img/b-84-64-as046-140-150-160-180.webp","w":499,"h":197},{"code":"BWYMJ-013B-B","kind":"top","size":"1510 × 510 × 130 mm","internal":"580 × 370 mm","mat":"Glass","color":"French blue","custom":false,"img":"img/b-84-65-bwymj-013b-b.webp","w":559,"h":224}];
+const KIND={counter:"Countertop basin",top:"Vanity top basin"};
+const BVIEWS=[["all","All"],["counter","Countertop"],["top","Vanity top"],["Ceramic","Ceramic"],["Solid surface","Solid surface"],["Sintered stone","Sintered stone"]];
+const LEAD="as813109-120";
+const VIEWS=[["all","All"],["light","Light timber"],["dark","Dark timber"],["painted","Painted"]];
+
+/* ==== IN SITU: paste YouTube Shorts links; piece = the piece id shown ==== */
+const VIDEOS=[
+  {url:"https://www.youtube.com/shorts/REPLACE_VIDEO_01", piece:"as813109-120", caption:"Ensuite · [SUBURB]"},
+  {url:"https://www.youtube.com/shorts/REPLACE_VIDEO_02", piece:"kl813024-120", caption:"Main bathroom · [SUBURB]"},
+  {url:"https://www.youtube.com/shorts/REPLACE_VIDEO_03", piece:"as813117",     caption:"Powder room · [SUBURB]"},
+  {url:"https://www.youtube.com/shorts/REPLACE_VIDEO_04", piece:"kl810971-150", caption:"Double basin · [SUBURB]"},
+  {url:"https://www.youtube.com/shorts/REPLACE_VIDEO_05", piece:"kl810892a-80", caption:"Guest bathroom · [SUBURB]"},
+  {url:"https://www.youtube.com/shorts/REPLACE_VIDEO_06", piece:"as810879a-90", caption:"Tiny home · [SUBURB]"},
+  {url:"https://www.youtube.com/shorts/REPLACE_VIDEO_07", piece:"kl813023a",    caption:"Classic bathroom · [SUBURB]"},
+];
+
+/* ==== helpers ==== */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const reduced=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
+const byId=id=>PIECES.find(p=>p.id===id);
+const no=p=>String(PIECES.indexOf(p)+1).padStart(2,"0");
+const widthOf=p=>((p.cabinet||"").match(/\d{3,4}/)||[""])[0];
+const NOPHOTO="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#ece5da"/><text x="200" y="158" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#776f64">No photo yet</text></svg>');
+
+/* ==== lead + hang ==== */
+const lead=byId(LEAD);
+$("#leadImg").src=IMG[lead.id][0][0]; $("#leadImg").alt=`${lead.name}, ${lead.finish}`;
+$("#leadLabel").innerHTML=`<div class="t"><span class="label" style="color:var(--brass)">No. ${no(lead)}</span><h3>The ${lead.name}</h3><span class="label">${lead.code}</span></div><span style="color:var(--muted);font-size:.9rem">${lead.desc} · ${lead.finish} · ${lead.cabinet}</span>`;
+$("#leadBtn").onclick=()=>openPiece(lead.id);
+let view="all";
+$("#views").innerHTML=VIEWS.map(([k,l])=>`<button data-view="${k}" aria-pressed="${k==="all"}">${l}</button>`).join("");
+const dims=(w,h)=>w&&h?` width="${w}" height="${h}"`:"";
+function renderHang(){
+  $("#pieceCount").textContent=PIECES.length;
+  $("#hang").innerHTML=PIECES.map(p=>{const [f,w,h]=(IMG[p.id]||[[NOPHOTO,0,0,0]])[0];return `<figure class="piece" data-tone="${p.tone}" style="margin-inline:0"${view==="all"||p.tone===view?"":" hidden"}>
+  <button class="frame" data-piece="${p.id}" aria-label="Open ${esc(p.name)}"><img src="${f}"${dims(w,h)} loading="lazy" alt="${esc(p.name)}, ${esc(p.finish)}"><span class="more">View piece</span></button>
+  <figcaption class="tag"><span class="no">${no(p)}</span><h3>The ${esc(p.name)}</h3><p>${esc(p.desc||"")}${widthOf(p)?` · ${esc(widthOf(p))} mm`:""}</p><p style="font-size:.74rem;letter-spacing:.08em">${esc(p.code)}${p.custom?` · <span class="custom-badge">Added</span>`:""}</p></figcaption></figure>`}).join("");
+  renderPieceSelect();
+}
+function setView(k){
+  view=k; document.querySelectorAll("#views button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.view===k));
+  document.querySelectorAll(".piece").forEach(el=>{const show=k==="all"||el.dataset.tone===k; el.hidden=!show; if(show){el.classList.remove("fade");void el.offsetWidth;el.classList.add("fade");}});
+}
+
+/* ==== basins ==== */
+let bview="all";
+$("#basinCount").textContent=BASINS.length;
+$("#bviews").innerHTML=BVIEWS.map(([k,l])=>`<button data-bview="${k}" aria-pressed="${k==="all"}">${l}</button>`).join("");
+$("#basinGrid").innerHTML=BASINS.map((b,i)=>`<button class="basin" data-basin="${i}" aria-label="Open basin ${esc(b.code)}">
+  <span class="bframe"><img src="${b.img}" width="${b.w}" height="${b.h}" loading="lazy" alt="${esc(KIND[b.kind])} ${esc(b.code)}, ${esc(b.mat.toLowerCase())}"></span>
+  <b>${esc(b.code)}</b><span>${b.mat} · ${esc(b.color)}</span></button>`).join("");
+const bVisible=()=>BASINS.map((b,i)=>i).filter(i=>bview==="all"||BASINS[i].kind===bview||BASINS[i].mat===bview);
+function setBView(k){bview=k;document.querySelectorAll("#bviews button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.bview===k));
+  const vis=new Set(bVisible()); document.querySelectorAll(".basin").forEach(el=>{const show=vis.has(+el.dataset.basin);el.hidden=!show;if(show){el.classList.remove("fade");void el.offsetWidth;el.classList.add("fade");}});}
+let curBasin=null;
+function basinList(){const v=bVisible();return v.includes(curBasin)?v:BASINS.map((_,j)=>j);}
+function openBasin(i){
+  cur=null; curBasin=+i; lastFocus=lastFocus||document.activeElement;
+  $("#viewer").hidden=false; document.body.classList.add("noscroll");
+  const b=BASINS[curBasin], list=basinList(), k=list.indexOf(curBasin);
+  const prev=list[(k-1+list.length)%list.length], next=list[(k+1)%list.length];
+  $("#vImg").innerHTML=`<img src="${b.img}" width="${b.w}" height="${b.h}" class="cut" alt="${esc(b.code)}">`;
+  $("#vThumbs").innerHTML=""; document.querySelectorAll(".v-arrow").forEach(a=>a.hidden=true);
+  $("#vSide").innerHTML=`<span class="label" style="color:var(--brass)">${KIND[b.kind]}</span>
+    <h2 style="font-size:2rem;word-break:break-word">${esc(b.code)}</h2>
+    <dl><dt>Size</dt><dd>${esc(b.size)}</dd>${b.internal?`<dt>Bowl</dt><dd>${esc(b.internal)}</dd>`:""}
+      <dt>Material</dt><dd>${esc(b.mat)}</dd><dt>Colour</dt><dd>${esc(b.color)}${b.custom?" (made to any colour)":""}</dd></dl>
+    <p style="font-size:.86rem;color:var(--muted)">Sizes are length × depth × height. Codes with several numbers come in each listed width.</p>
+    <button class="btn ink" data-ask="basin-${curBasin}">Ask about this basin</button>
+    <div class="nav"><button class="tlink" data-basin="${prev}">← ${esc(BASINS[prev].code)}</button><button class="tlink" data-basin="${next}">${esc(BASINS[next].code)} →</button></div>`;
+  $(".v-close").focus();
+}
+
+/* ==== viewer ==== */
+let cur=null, curImg=0, lastFocus=null;
+function visible(){return PIECES.filter(p=>view==="all"||p.tone===view);}
+function openPiece(id,i=0){
+  curBasin=null; cur=byId(id); curImg=i; lastFocus=lastFocus||document.activeElement;
+  $("#viewer").hidden=false; document.body.classList.add("noscroll"); renderViewer();
+  $(".v-close").focus();
+}
+function renderViewer(){
+  const p=cur, imgs=IMG[p.id]||[[NOPHOTO,0,0,0]], [f,w,h,cut]=imgs[curImg];
+  $("#vImg").innerHTML=`<img src="${f}"${dims(w,h)} alt="${esc(p.name)}, image ${curImg+1} of ${imgs.length}"${cut?' class="cut"':""}>`;
+  $("#vThumbs").innerHTML=imgs.length>1?imgs.map((m,i)=>`<button data-vthumb="${i}" aria-pressed="${i===curImg}" aria-label="Image ${i+1}"><img src="${m[0]}" alt=""></button>`).join(""):"";
+  document.querySelectorAll(".v-arrow").forEach(a=>a.hidden=imgs.length<2);
+  const list=visible(), k=list.indexOf(p), prev=list[(k-1+list.length)%list.length], next=list[(k+1)%list.length];
+  $("#vSide").innerHTML=`
+    <span class="label" style="color:var(--brass)">No. ${no(p)}</span>
+    <h2 style="font-size:2.2rem">The ${esc(p.name)}</h2>
+    <p style="color:var(--muted);margin-top:-8px">${esc(p.desc)}</p>
+    <span class="label">${esc(p.code)}</span>
+    <dl>
+      <dt>Cabinet</dt><dd>${esc(p.cabinet||"")}</dd>
+      <dt>Mounting</dt><dd>${esc(p.mount)}</dd>
+      <dt>Finish</dt><dd>${esc(p.finish)}</dd>
+      <dt>Material</dt><dd>${esc(p.material)}</dd>
+      <dt>Storage</dt><dd>${esc(p.structure)}</dd>
+      <dt>Top &amp; basin</dt><dd>${esc(p.top)}</dd>
+      <dt>Paired mirror</dt><dd>${esc(p.mirror)}</dd>
+    </dl>
+    ${p.id==="kl813023a"?`<div style="display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center"><img src="${IMG.as003[0][0]}" alt="AS003 sintered stone basin top" style="width:100%;background:var(--wall)"><span style="font-size:.86rem"><b>Specified top:</b> <button class="tlink" data-basin="${BASINS.findIndex(b=>b.code.startsWith("AS003-75"))}">AS003</button> hot-bent sintered stone basin, Volakas white</span></div>`:""}
+    ${p.note?`<p class="note">${esc(p.note)}</p>`:""}
+    <button class="btn ink" data-ask="${p.id}">Ask about this piece</button>
+    <div class="owner-tools"><button class="btn" data-copy="${p.id}">Copy listing</button>${p.custom&&canWrite?`<button class="btn" data-edit="${p.id}">Edit</button><button class="btn" data-remove="${p.id}">Remove</button>`:""}</div>
+    <p class="ed-msg" id="vMsg" role="status"></p>
+    <div class="nav"><button class="tlink" data-piece="${prev.id}">← The ${esc(prev.name)}</button><button class="tlink" data-piece="${next.id}">The ${esc(next.name)} →</button></div>`;
+}
+function closePiece(){curBasin=null;$("#viewer").hidden=true; document.body.classList.remove("noscroll"); lastFocus?.focus?.(); lastFocus=null;}
+function stepImg(d){const n=(IMG[cur.id]||[1]).length; curImg=(curImg+d+n)%n; renderViewer();}
+function stepPiece(d){const list=visible(),k=list.indexOf(cur); openPiece(list[(k+d+list.length)%list.length].id);}
+
+/* ==== reels ==== */
+const ytId=u=>{const m=String(u).match(/(?:shorts\/|[?&]v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{6,})/);return m?m[1]:null;};
+const isPlaceholder=u=>/REPLACE/i.test(u)||!ytId(u);
+$("#reels").innerHTML=VIDEOS.map((v,i)=>{const p=byId(v.piece);return `<div class="reel">
+  <button class="vid" data-video="${i}" aria-label="Play video: ${esc(v.caption)}">${p?`<img src="${IMG[p.id][0][0]}" alt="" draggable="false">`:""}
+    <span class="yt">${isPlaceholder(v.url)?"PLACEHOLDER":"SHORTS"}</span>
+    <span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span>
+    <span class="cap">${esc(v.caption).replace(/\[(.+?)\]/g,'<span class="ph" style="color:#fff;border-color:#fff">$1</span>')}</span></button>
+  ${p?`<button class="see" data-piece="${p.id}"><b>The ${esc(p.name)}</b><span>No. ${no(p)} · ${p.code}</span></button>`:""}</div>`}).join("");
+function openVideo(i){
+  const v=VIDEOS[i], id=ytId(v.url), ph=isPlaceholder(v.url);
+  const m=document.createElement("div"); m.className="vmodal"; m.id="vmodal"; m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-label",v.caption);
+  m.innerHTML=`<button class="vclose" data-vclose="1" aria-label="Close video">✕</button><div class="vframe">${ph?`<div class="none">Video coming soon.<br>Paste a YouTube Shorts link into VIDEOS to play it here.</div>`:`<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&playsinline=1&rel=0" title="${esc(v.caption)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`}</div>`;
+  document.body.appendChild(m); m.querySelector(".vclose").focus();
+}
+function closeVideo(){$("#vmodal")?.remove();}
+
+/* ==== form ==== */
+function renderPieceSelect(){const keep=$("#f-piece").value; $("#f-piece").innerHTML=`<option value="">Not sure yet</option>`+`<optgroup label="Vanities">`+PIECES.map(p=>`<option value="${p.id}">The ${esc(p.name)} · ${esc(p.code)}</option>`).join("")+`</optgroup><optgroup label="Basins">`+BASINS.map((b,i)=>`<option value="basin-${i}">${esc(b.code)} · ${KIND[b.kind]}</option>`).join("")+`</optgroup>`; $("#f-piece").value=keep;}
+renderHang();
+/* open a piece straight from a link ending in #<piece id>, e.g. #as813109-120 */
+(()=>{const h=(location.hash||"").slice(1); if(h&&byId(h)) setTimeout(()=>openPiece(h),0);})();
+$("#form").addEventListener("submit",e=>{
+  e.preventDefault(); const name=$("#f-name").value.trim(), email=$("#f-email").value.trim(), s=$("#sent"); s.hidden=false;
+  if(!name||!/.+@.+\..+/.test(email)){s.textContent="Add your name and a valid email so we can reply.";return;}
+  s.textContent=`Thanks ${name}. This preview form isn't connected to email yet, so nothing was sent.`;
+});
+
+/* ==== events ==== */
+document.addEventListener("click",e=>{
+  if(e.target.classList?.contains("vmodal")){closeVideo();return;}
+  const t=e.target.closest("[data-copy],[data-edit],[data-remove],[data-edclose],[data-piece],[data-view],[data-bview],[data-basin],[data-vimg],[data-vthumb],[data-vclose-piece],[data-ask],[data-video],[data-vscroll],[data-vclose]"); if(!t) return;
+  const d=t.dataset;
+  if(d.copy){copyListing(d.copy);return;}
+  if(d.edit){openEditor(d.edit);return;}
+  if(d.remove){removePiece(d.remove,t);return;}
+  if(d.edclose){closeEditor();return;}
+  if(d.view){setView(d.view);return;}
+  if(d.bview){setBView(d.bview);return;}
+  if(d.basin!=null&&d.basin!==""){openBasin(d.basin);return;}
+  if(d.video){const i=+d.video; i===activeReel?openVideo(i):centerReel(i,true); return;}
+  if(d.vscroll){centerReel(activeReel+ +d.vscroll,true);return;}
+  if(d.vclose){closeVideo();return;}
+  if(d.piece){openPiece(d.piece);return;}
+  if(d.vimg){stepImg(+d.vimg);return;}
+  if(d.vthumb){curImg=+d.vthumb;renderViewer();return;}
+  if(d.vclosePiece){closePiece();return;}
+  if(d.ask){$("#f-piece").value=d.ask; closePiece(); document.getElementById("enquire").scrollIntoView({behavior:reduced()?"auto":"smooth"});}
+});
+document.addEventListener("keydown",e=>{
+  if($("#vmodal")){if(e.key==="Escape")closeVideo();return;}
+  if(!$("#editor").hidden){if(e.key==="Escape")closeEditor();return;}
+  if($("#viewer").hidden) return;
+  if(e.key==="Escape") closePiece();
+  if(curBasin!=null){const l=basinList(),k=l.indexOf(curBasin);if(e.key==="ArrowRight")openBasin(l[(k+1)%l.length]);if(e.key==="ArrowLeft")openBasin(l[(k-1+l.length)%l.length]);return;}
+  if(e.key==="ArrowRight") e.shiftKey?stepPiece(1):stepImg(1);
+  if(e.key==="ArrowLeft") e.shiftKey?stepPiece(-1):stepImg(-1);
+});
+/* swipe between images in the viewer */
+let sx=null; $("#vImg").addEventListener("pointerdown",e=>sx=e.clientX);
+$("#vImg").addEventListener("pointerup",e=>{if(sx==null||curBasin!=null){sx=null;return;} const dx=e.clientX-sx; sx=null; if(Math.abs(dx)>50) stepImg(dx<0?1:-1);});
+
+/* ==== ADDED VANITIES: saved in the page's database, photos in its asset store ==== */
+const BASE=PIECES.length;
+let db=null, assets=null, canWrite=false, editingId=null;
+function copyListing(id){
+  const p=byId(id); if(!p) return;
+  const txt=[`The ${p.name}`,`Code: ${p.code}`,p.desc,`Cabinet: ${p.cabinet||""}`,`Mounting: ${p.mount||""}`,`Finish: ${p.finish||""}`,`Material: ${p.material||""}`,`Storage: ${p.structure||""}`,`Top & basin: ${p.top||""}`,`Paired mirror: ${p.mirror||""}`].filter(Boolean).join("\n");
+  const m=$("#vMsg");
+  try{navigator.clipboard.writeText(txt).then(()=>{if(m)m.textContent="Listing copied. Paste it into your product page.";},()=>fallback());}catch(e){fallback();}
+  function fallback(){if(!m)return; m.innerHTML=`<textarea style="width:100%;height:150px;font:inherit" readonly>${esc(txt)}</textarea>`; m.querySelector("textarea").select();}
+}
+function openEditor(id){
+  editingId=id||null; const p=id?byId(id):null;
+  $("#edTitle").textContent=p?`Edit the ${p.name}`:"Add a vanity"; $("#edMsg").textContent="";
+  const f={name:"",code:"",desc:"",cabinet:"",mount:"Wall-hung",finish:"",tone:"light",material:"",structure:"",top:"",mirror:"",...(p||{})};
+  ["name","code","desc","cabinet","finish","material","structure","top","mirror"].forEach(k=>$("#e-"+k).value=f[k]||"");
+  $("#e-mount").value=f.mount; $("#e-tone").value=f.tone; $("#e-photos").value="";
+  $("#e-photos-wrap").hidden=!assets;
+  const keep=$("#e-keep"); keep.hidden=!(p&&p.images&&p.images.length); keep.textContent=p?`Keeps its ${p.images?.length||0} photo(s). New photos you pick are added after them.`:"";
+  $("#editor").hidden=false; document.body.classList.add("noscroll"); $("#e-name").focus();
+}
+function closeEditor(){$("#editor").hidden=true; if($("#viewer").hidden) document.body.classList.remove("noscroll");}
+$("#addBtn").onclick=()=>openEditor(null);
+$("#edForm").addEventListener("submit",async e=>{
+  e.preventDefault(); const msg=$("#edMsg"), btn=$("#edSave");
+  const v=k=>$("#e-"+k).value.trim();
+  if(!v("name")||!v("code")){msg.textContent="Add a name and the factory code.";return;}
+  if(!db){msg.textContent="Saving isn't available in this view. Open the page signed in to Claude.";return;}
+  btn.disabled=true; msg.textContent="Saving…";
+  try{
+    const old=editingId?byId(editingId):null;
+    const images=[...(old?.images||[])];
+    const files=[...$("#e-photos").files];
+    if(files.length&&assets){
+      for(const [i,f] of files.entries()){msg.textContent=`Uploading photo ${i+1} of ${files.length}…`;
+        try{const r=await assets.upload(f,{type:f.type||"image/jpeg"}); images.push(r.id);}
+        catch(err){msg.textContent=err?.code==="too_large"?`${f.name} is over 20 MB. Pick a smaller photo.`:err?.code==="unsupported_type"?`${f.name} isn't a JPG, PNG or WebP.`:`Couldn't upload ${f.name}. Try again.`; btn.disabled=false; return;}}
+    }
+    const body={name:v("name"),code:v("code"),desc:v("desc"),cabinet:v("cabinet"),mount:$("#e-mount").value,finish:v("finish"),tone:$("#e-tone").value,material:v("material"),structure:v("structure"),top:v("top"),mirror:v("mirror"),images,createdAt:old?.createdAt||Date.now()};
+    const ref=old?db.doc("vanities/"+old.docId):db.collection("vanities").doc();
+    await ref.set(body);
+    msg.textContent="Saved."; closeEditor(); if(old&&!$("#viewer").hidden) openPiece("c-"+ref.id);
+  }catch(err){
+    msg.textContent=err?.code==="invalid_argument"?"You don't have permission to add vanities here.":err?.code==="quota_exceeded"?"The page's storage is full. Remove some added vanities first.":"Couldn't save. Try again in a moment.";
+    if(err?.code==="invalid_argument"){canWrite=false;$("#addBtn").hidden=true;}
+  }finally{btn.disabled=false;}
+});
+async function removePiece(id,btn){
+  const p=byId(id); if(!p?.custom||!db) return;
+  if(btn.dataset.armed!=="1"){btn.dataset.armed="1"; btn.textContent="Tap again to remove"; return;}
+  try{await db.doc("vanities/"+p.docId).delete(); closePiece();}
+  catch(err){$("#vMsg").textContent="Couldn't remove it. Try again.";}
+}
+function applyCustom(docs){
+  PIECES.splice(BASE);
+  for(const d of docs){const x=d.data(); if(!x) continue; const id="c-"+d.id;
+    PIECES.push({...x,id,docId:d.id,custom:true,images:Array.isArray(x.images)?x.images:[]});
+    IMG[id]=(Array.isArray(x.images)&&x.images.length)?x.images.map(a=>["/_blob/"+a,0,0,0]):[[NOPHOTO,0,0,0]];}
+  renderHang();
+  if(cur&&!$("#viewer").hidden){const still=byId(cur.id); if(still){cur=still; curImg=Math.min(curImg,(IMG[cur.id]||[1]).length-1); renderViewer();} else closePiece();}
+}
+(async()=>{
+  try{db=await window.claude?.use?.("db");}catch(e){db=null;}
+  if(!db) return;
+  try{assets=await window.claude.use("assets");}catch(e){assets=null;}
+  try{const user=await window.claude.use("user"); const c=user?await user.can("data.write"):null; canWrite=c===null||c===undefined?true:!!c;}catch(e){canWrite=true;}
+  $("#addBtn").hidden=!canWrite;
+  db.collection("vanities").orderBy("createdAt").onSnapshot(snap=>applyCustom(snap.docs),()=>{});
+})();
+
+/* ==== reels centre-lock: slow eased glide, one per swipe, size follows position ==== */
+let activeReel=0;
+const reelsEl=$("#reels");
+/* Motion: one card per gesture. Long, gentle settle (ease-out) so it starts immediately and lands softly. */
+const GLIDE_MS=850;
+const ease=t=>1-Math.pow(1-t,4);
+let glide=0, raf=0, paintRaf=0, gliding=false;
+const targetFor=i=>{const k=reelsEl.children[i]; return k?k.offsetLeft-(reelsEl.clientWidth-k.offsetWidth)/2:reelsEl.scrollLeft;};
+function setActive(i){activeReel=i;[...reelsEl.children].forEach((k,j)=>{k.classList.toggle("active",j===i);k.querySelector(".vid").tabIndex=j===i?0:-1;});}
+function centerReel(i,smooth){
+  i=Math.max(0,Math.min(VIDEOS.length-1,i));
+  const to=targetFor(i); cancelAnimationFrame(glide); setActive(i);
+  if(!smooth||reduced()){gliding=false;reelsEl.scrollLeft=to;paintReels();return;}
+  const from=reelsEl.scrollLeft, t0=performance.now(); gliding=true;
+  const step=now=>{const t=Math.min(1,(now-t0)/GLIDE_MS); reelsEl.scrollLeft=from+(to-from)*ease(t); if(t<1) glide=requestAnimationFrame(step); else gliding=false;};
+  glide=requestAnimationFrame(step);
+}
+/* size follows position: grows sliding in, shrinks sliding out */
+function paintReels(){
+  const mid=reelsEl.scrollLeft+reelsEl.clientWidth/2;
+  [...reelsEl.children].forEach(k=>{
+    const d=Math.min(1,Math.abs(k.offsetLeft+k.offsetWidth/2-mid)/(k.offsetWidth+14)), f=1-d*d*(3-2*d);
+    k.style.setProperty("--s",(.88+.2*f).toFixed(4)); k.style.setProperty("--o",(.45+.55*f).toFixed(3));
+  });
+}
+reelsEl.addEventListener("scroll",()=>{cancelAnimationFrame(paintRaf);paintRaf=requestAnimationFrame(paintReels);},{passive:true});
+function nearest(){const mid=reelsEl.scrollLeft+reelsEl.clientWidth/2;let b=0,bd=Infinity;[...reelsEl.children].forEach((k,i)=>{const d=Math.abs(k.offsetLeft+k.offsetWidth/2-mid);if(d<bd){bd=d;b=i;}});return b;}
+
+/* Touch and mouse drag: the card follows the finger, then moves exactly one step (or springs back). */
+let drag=null, suppressClick=false;
+reelsEl.addEventListener("pointerdown",e=>{
+  if(e.button!==0) return;
+  const wasGliding=gliding; cancelAnimationFrame(glide); gliding=false;
+  drag={x:e.clientX,y:e.clientY,left:reelsEl.scrollLeft,moved:false,id:e.pointerId,start:activeReel,wasGliding};
+});
+reelsEl.addEventListener("pointermove",e=>{
+  if(!drag) return; const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+  if(!drag.moved){
+    if(Math.abs(dx)<8&&Math.abs(dy)<8) return;
+    if(Math.abs(dy)>Math.abs(dx)){const d=drag;drag=null; if(d.wasGliding) centerReel(d.start,true); return;}
+    drag.moved=true; reelsEl.classList.add("dragging"); try{reelsEl.setPointerCapture(drag.id);}catch(err){}
+  }
+  /* cap the drag to one card either way so a long swipe can't pass two */
+  const w=(reelsEl.children[0]?.offsetWidth||300)+14;
+  const cdx=Math.max(-w,Math.min(w,dx*0.85));
+  reelsEl.scrollLeft=drag.left-cdx;
+});
+function finishDrag(e,cancelled){
+  if(!drag) return; const d=drag; drag=null; reelsEl.classList.remove("dragging");
+  if(!d.moved){ if(d.wasGliding) centerReel(d.start,true); return; }
+  suppressClick=true; setTimeout(()=>suppressClick=false,0);
+  if(cancelled){centerReel(d.start,true);return;}
+  const dx=e.clientX-d.x;
+  centerReel(d.start+(dx<-40?1:dx>40?-1:0),true);
+}
+reelsEl.addEventListener("pointerup",e=>finishDrag(e,false));
+reelsEl.addEventListener("pointercancel",e=>finishDrag(e,true));
+reelsEl.addEventListener("lostpointercapture",e=>{if(e.target===reelsEl&&drag&&drag.moved&&e.pointerId===drag.id) finishDrag(e,true);});
+reelsEl.addEventListener("click",e=>{if(suppressClick){e.stopPropagation();e.preventDefault();}},true);
+
+/* Trackpad / mouse wheel: one card per gesture. A gesture only ends after the wheel goes quiet,
+   so a trackpad's momentum tail can't trigger a second move. */
+let wheelBusy=false, wheelAcc=0, wheelQuiet=0;
+reelsEl.addEventListener("wheel",e=>{
+  const dx=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:(e.shiftKey?e.deltaY:0); if(!dx) return;
+  e.preventDefault();
+  clearTimeout(wheelQuiet); wheelQuiet=setTimeout(()=>{wheelBusy=false;wheelAcc=0;},240);
+  if(wheelBusy) return;
+  wheelAcc+=dx;
+  if(Math.abs(wheelAcc)>24){wheelBusy=true; centerReel(activeReel+(wheelAcc>0?1:-1),true);}
+},{passive:false});
+reelsEl.addEventListener("keydown",e=>{if(e.key==="ArrowRight"||e.key==="ArrowLeft"){e.preventDefault();centerReel(activeReel+(e.key==="ArrowRight"?1:-1),true);}});
+addEventListener("resize",()=>centerReel(activeReel,false));
+centerReel(Math.min(1,VIDEOS.length-1),false);
+requestAnimationFrame(()=>centerReel(activeReel,false));
+</script>
+</body></html>
