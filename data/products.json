@@ -1,4 +1,5 @@
 {
+ "_help": "price_aud is the real price in AUD (null = not set yet). example_price_aud is only used while testing (SHOW_EXAMPLE_PRICES in the site, AIRWALLEX_ENV=demo on the server). After editing, run npm run sync.",
  "vanities": [
   {
    "id": "as813109-120",
@@ -22,6 +23,7 @@
     "img/as813109-120-3.webp",
     "img/as813109-120-4.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 1090
   },
   {
@@ -46,6 +48,7 @@
     "img/as813046a-100-3.webp",
     "img/as813046a-100-4.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 890
   },
   {
@@ -68,6 +71,7 @@
     "img/kl813024-120-1.webp",
     "img/kl813024-120-2.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 1090
   },
   {
@@ -91,6 +95,7 @@
     "img/as813117-2.webp",
     "img/as813117-3.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 790
   },
   {
@@ -115,6 +120,7 @@
     "img/kl810971-150-3.webp",
     "img/kl810971-150-4.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 1390
   },
   {
@@ -139,6 +145,7 @@
     "img/as813046c-100-3.webp",
     "img/as813046c-100-4.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 1090
   },
   {
@@ -163,6 +170,7 @@
     "img/kl813023a-3.webp",
     "img/kl813023a-4.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 1290
   },
   {
@@ -187,6 +195,7 @@
     "img/as813045-90-3.webp",
     "img/as813045-90-4.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 790
   },
   {
@@ -211,6 +220,7 @@
     "img/kl813003-100-3.webp",
     "img/kl813003-100-4.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 890
   },
   {
@@ -233,6 +243,7 @@
     "img/kl810892a-80-1.webp",
     "img/kl810892a-80-2.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 690
   },
   {
@@ -257,6 +268,7 @@
     "img/as813050a-120-3.webp",
     "img/as813050a-120-4.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 1090
   },
   {
@@ -278,6 +290,7 @@
    "images": [
     "img/kl813027a-120-1.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 1090
   },
   {
@@ -300,6 +313,7 @@
     "img/as810879a-90-1.webp",
     "img/as810879a-90-2.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 790
   },
   {
@@ -322,6 +336,7 @@
     "img/as810879b-90-1.webp",
     "img/as810879b-90-2.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 790
   },
   {
@@ -346,6 +361,7 @@
     "img/kl813019-100-3.webp",
     "img/kl813019-100-4.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 890
   },
   {
@@ -367,6 +383,7 @@
    "images": [
     "img/kl813001a-120-1.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 1090
   },
   {
@@ -388,6 +405,7 @@
    "images": [
     "img/as813050b-100-1.webp"
    ],
+   "price_aud": null,
    "example_price_aud": 890
   }
  ],
@@ -403,6 +421,7 @@
     "black",
     "chrome"
    ],
+   "price_aud": null,
    "example_price_aud": 289,
    "code": "[TAP CODE]",
    "specs": {
@@ -429,6 +448,7 @@
     "black",
     "chrome"
    ],
+   "price_aud": null,
    "example_price_aud": 229,
    "code": "[TAP CODE]",
    "specs": {
@@ -455,6 +475,7 @@
     "black",
     "chrome"
    ],
+   "price_aud": null,
    "example_price_aud": 349,
    "code": "[TAP CODE]",
    "specs": {
@@ -493,35 +514,6 @@
    "hi": "#f2f4f6"
   }
  },
- "freight_zones_example": [
-  {
-   "id": "cq",
-   "label": "Central Queensland",
-   "per_vanity_aud": 60
-  },
-  {
-   "id": "seq",
-   "label": "South East Queensland",
-   "per_vanity_aud": 120
-  },
-  {
-   "id": "qld",
-   "label": "Rest of Queensland",
-   "per_vanity_aud": 180
-  },
-  {
-   "id": "east",
-   "label": "NSW, ACT and VIC",
-   "per_vanity_aud": 240
-  },
-  {
-   "id": "far",
-   "label": "SA, WA, NT and TAS",
-   "per_vanity_aud": null
-  }
- ],
- "tap_only_freight_example_aud": 15,
- "deposit_example": 0.3,
  "basins": [
   {
    "code": "WA38",

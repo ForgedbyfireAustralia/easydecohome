@@ -1,0 +1,13 @@
+{
+  "name": "easy-deco-home",
+  "private": true,
+  "description": "Easy Deco Home store: static site in site/, Netlify Functions in netlify/functions/, payments through Airwallex.",
+  "scripts": {
+    "sync": "node scripts/sync-data.mjs",
+    "test": "node scripts/sync-data.mjs --check && node --test \"tests/*.test.*\""
+  },
+  "engines": { "node": ">=22.18" },
+  "dependencies": {
+    "@netlify/blobs": "^11.1.9"
+  }
+}

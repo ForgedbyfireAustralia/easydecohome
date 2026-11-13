@@ -1,4 +1,4 @@
-# CLAUDE.md: [PROJECT-NAME] cross-border store
+# CLAUDE.md: Easy Deco Home cross-border store (easydecohome.com.au)
 
 Read this whole file before changing anything. Keep replies short. Do the work, then say what changed in a line or two.
 
@@ -18,17 +18,22 @@ site/index.html        store: landing, grid, product view, tapware, cart drawer,
 site/collection.html   gallery of all vanities and the basin library (read-only catalogue view)
 site/referral.html     affiliate/referrer demo (in-memory only; optional)
 site/img/              117 WebP images (vanity id + "-1.webp", "-2.webp", ...)
-data/products.json     17 vanities, 3 tap models, finishes, 65 basins (example prices)
-data/shipping.json     countries, freight, lead times (placeholders)
-netlify/functions/create-payment.js     Airwallex PaymentIntent (stub: amount = 0, must be finished)
-netlify/functions/airwallex-webhook.js  payment_intent.succeeded handler (stub)
+site/js/pricing.js     THE order maths (prices, currency, rounding, freight, tap gate). Used by the page AND the payment function
+data/products.json     17 vanities, 3 tap models, finishes, 65 basins. price_aud = real price (null = unset), example_price_aud = testing only
+data/shipping.json     countries: currency, fx_from_aud, rounding, freight, example_freight, lead time, postcode/regions
+scripts/sync-data.mjs  `npm run sync` copies data/*.json into site/index.html (the /*@sync:...*/ blocks). Never hand-edit those blocks
+netlify/functions/create-payment.mts     server total via pricing.js -> pending order in Blobs -> Airwallex PaymentIntent
+netlify/functions/airwallex-webhook.mts  signature check, duplicate-event guard, mark paid, email customer + factory
+netlify/lib/           airwallex.mts (login/intent/signature), orders.mts (Blobs stores "orders-<env>"), email.mts (Resend), env.mts (BRAND, SELLER)
+tests/                 `npm test`: sync check + pricing + both functions against a fake Airwallex/Resend
 docs/brief.md          original Bilt brief: full specs, slider and tapware logic (reference only)
 source/                supplier PDFs and raw photos, git-ignored, never published
 ```
 
 ## 3. Rules that can't be broken
 - **Secrets:**
-  - Airwallex keys exist only in Netlify environment variables: `AIRWALLEX_CLIENT_ID`, `AIRWALLEX_API_KEY`, `AIRWALLEX_WEBHOOK_SECRET` and `AIRWALLEX_ENV` (`demo` for previews, `prod` for production).
+  - Airwallex keys exist only in Netlify environment variables: `AIRWALLEX_CLIENT_ID`, `AIRWALLEX_API_KEY`, `AIRWALLEX_WEBHOOK_SECRET` and `AIRWALLEX_ENV` (`demo` for previews, `prod` for production). Anything other than `prod` is treated as sandbox, and only the sandbox may charge example prices or example freight.
+  - Order emails: `RESEND_API_KEY`, `ORDER_FROM_EMAIL` (sender on a domain verified in Resend) and `ORDER_EMAIL` (the factory inbox). Without them orders are still marked paid, but no email goes out. `AIRWALLEX_API_BASE` is for tests only; never set it on Netlify.
   - Never put keys in code, commits, chat or logs. If a key leaks, delete it and recreate it.
 - **Git:** work on a new branch and open a pull request. Never push to `main`; the owner merges.
 - **Prices are server-side:** the function works out the amount from `data/products.json` and `data/shipping.json`. Never trust an amount sent by the browser.
@@ -36,7 +41,7 @@ source/                supplier PDFs and raw photos, git-ignored, never publishe
 - **Placeholders:** anything unknown shows a clearly marked label, like `[ETA]` or `[FREIGHT AUD]`. Never make up a value.
 - **Tapware compliance (Australia):**
   - Each tap needs `wels.reg`, `wels.stars`, `wels.flow` and a `watermark` licence number.
-  - Checkout must block any Australian order with a tap that's missing them. The gate already exists in `placeOrder()`; keep it.
+  - Checkout must block any Australian order with a tap that's missing them. The gate is in `checkCo()` on the page and in `pricing.js` `quote()` on the server (it currently applies to every country); keep both.
 - **Consumer law:** the terms tick box must not remove statutory consumer rights (the Australian Consumer Law in Australia).
 - **Photo rights:** images are SHKL catalogue renders. Written permission is still pending, so don't promote them publicly until it arrives.
 - **Business structure and GST:** out of scope. Don't add GST/VAT logic or wording unless asked.
@@ -50,10 +55,10 @@ source/                supplier PDFs and raw photos, git-ignored, never publishe
   - Tapware band, FAQ, Ask a question, newsletter.
 - **Data constants in the script:**
   - Vanity data: `IMG`, `PIECES`, `NAMES`, `FEATURED`, `VIDEOS`.
-  - Pricing: `PRICES` (empty, so `examplePrice()` is used while `SHOW_EXAMPLE_PRICES=true`).
-  - Taps: `TAPS`, `FINISH`, `BASIN`, `LOOK_FINISH`.
-  - Freight and deposit: `ZONES`, `DEPOSIT`.
-  - `SELLER="[SELLER NAME]"`.
+  - Pricing: `SHIPPING` and `CATALOG` (synced from data/, don't hand-edit), `PRICES` (derived), `SHOW_EXAMPLE_PRICES=true`, `PX` = `window.EDHPricing`.
+  - Taps: `TAPS` (look and specs; price, code, WELS and WaterMark come from `CATALOG`), `FINISH`, `BASIN`, `LOOK_FINISH`.
+  - Ship-to country: `shipTo` (localStorage `edh-ship-to`), `setShipTo()`. Prices show in that country's currency once it has `fx_from_aud`; otherwise in AUD, and checkout is closed for it.
+  - `SELLER="[HK COMPANY NAME]"` (page) and `SELLER` in `netlify/lib/env.mts` (emails): change both.
 - **Video slider:**
   - Always one card per gesture, with an `850 ms` ease-out `1-(1-t)^4`.
   - Wheel input is locked until 240 ms of quiet, and drags are capped at one card.
@@ -64,7 +69,12 @@ source/                supplier PDFs and raw photos, git-ignored, never publishe
   - Taps are matched to the basin type. The add button toggles: Added ✓, then Remove.
 - **Cart:**
   - Stored in localStorage `bb-cart`; saved items in `bb-saved-v2`.
-  - Checkout has three steps: details, delivery, payment. Orders get a confirmation number. It currently runs in test mode.
+  - Checkout has three steps: details, delivery (country + address), payment. "Continue to payment" calls create-payment, then mounts the Airwallex Drop-in (cards, Apple Pay, Google Pay). Order numbers look like `EDH-261113-K7QPX`.
+  - On a local static preview (no functions) checkout offers "Place test order (no payment)" instead.
+
+## 4b. Status (branch `cross-border-checkout`)
+- Done: section 5 steps 1–6 in sandbox form, with placeholders where values are unknown. The Apple Pay domain file is still missing (owner downloads it from Airwallex).
+- Not done: step 7 (policy pages), step 8 (real prices), and a real sandbox payment, which needs Airwallex sandbox keys on a Netlify deploy preview.
 
 ## 5. What to change for this project
 1. **Branding:** replace the brand name, logo text, promo bar, footer, emails and SEO tags with `[BRAND NAME]` and `[DOMAIN]`.
@@ -85,7 +95,7 @@ source/                supplier PDFs and raw photos, git-ignored, never publishe
 7. **Trust and policies:**
    - Pages for shipping, returns, warranty, privacy, terms and contact, with a real business address `[ADDRESS]`.
    - Airwallex's website review needs these, plus real prices.
-8. **Real prices:** fill `PRICES` and `products.json`, then set `SHOW_EXAMPLE_PRICES=false`.
+8. **Real prices:** fill `price_aud` in `data/products.json` and real freight, exchange rates and rounding in `data/shipping.json`, run `npm run sync`, then set `SHOW_EXAMPLE_PRICES=false`.
 
 ## 6. Airwallex setup (owner does this in the dashboard)
 - **Account details:** the account entity, the seller name on the site and the card-statement name must all match `[HK COMPANY NAME]` / `[STATEMENT NAME]`.
@@ -101,15 +111,16 @@ source/                supplier PDFs and raw photos, git-ignored, never publishe
 - **Mirrors, not vanities:** AS913117 and KL913001A.
 
 ## 8. Testing
-- Preview: open `site/index.html`, or run `npx netlify dev` to test the functions locally with a `.env` that never gets committed.
+- `npm test` must pass before every commit (sync check, pricing and both functions against fakes).
+- Preview: open `site/index.html`, or run `npx netlify dev` to test the functions locally with a `.env` (copy `.env.example`) that never gets committed.
 - Test on a phone-width viewport (390 px): no sideways scroll, the hero shows, and finger swipes on the slider move exactly one card.
 - Payments: complete an order in sandbox with an Airwallex test card and Apple Pay, then confirm the webhook marks it paid.
 
 ## 9. Open decisions (ask the owner)
-1. Brand name and domain.
+1. ~~Brand name and domain.~~ Easy Deco Home, easydecohome.com.au.
 2. Launch countries and their freight rates and lead times.
 3. Real prices and currency rounding.
-4. Who processes orders after payment: the factory's email, a spreadsheet or something else?
+4. Who processes orders after payment: the factory's email, a spreadsheet or something else? (Built for now: a Resend email to `ORDER_EMAIL`, plus the order record in Netlify Blobs.)
 5. The tap supplier's WELS and WaterMark numbers.
 6. Written permission from SHKL to use the photos.
 7. Keep or drop `referral.html`.

@@ -1,5 +1,7 @@
 .env
 .env.*
+!.env.example
 source/
 node_modules/
+.netlify/
 .DS_Store
