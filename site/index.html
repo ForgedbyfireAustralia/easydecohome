@@ -928,7 +928,8 @@ const PAY_ENDPOINT="/.netlify/functions/create-payment";
 const AWX_SDK="https://static.airwallex.com/components/sdk/v1/index.js";
 const MERCHANT_COUNTRY="HK"; // country of the Airwallex account (the Hong Kong seller); Apple Pay and Google Pay require it
 const RIGHTS={AU:"the Australian Consumer Law",NZ:"the Consumer Guarantees Act"};
-const isLocalPreview=()=>location.protocol==="file:"||/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)||/\.localhost$/.test(location.hostname);
+/* Previews with no payment functions (a local file or server, or GitHub Pages) offer a no-payment test order instead */
+const isLocalPreview=()=>location.protocol==="file:"||/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)||/\.(localhost|github\.io)$/.test(location.hostname);
 let co={name:"",email:"",phone:"",line1:"",line2:"",city:"",region:"",postcode:"",ref:"",agree:false,pay:null,busy:false,order:null};
 const cartPayload=()=>cartItems().map(({it,q})=>({id:it.id,q}));
 const quoteNow=()=>PX.quote({country:shipTo,items:cartPayload()},PCTX);
@@ -1006,7 +1007,7 @@ function renderCheckout(){
       <div class="cofields">${field("ref","Referral code (optional)",'autocomplete="off"')}</div>
       <label class="agree2"><input type="checkbox" id="co-agree" ${co.agree?"checked":""}><span>I'm buying from <b>${SELL()}</b> and agree to its <span class="ph">TERMS OF SALE</span> and <span class="ph">RETURNS POLICY</span>. My order ships direct from the factory and usually arrives in ${phify(String(c.lead_time_weeks))} weeks. My rights under ${RIGHTS[c.code]||"my local consumer law"} aren't affected.</span></label>
       <p class="coerr" id="coErr" role="alert">${blocked}</p>
-      ${p&&p.mode==="test"?`<div class="paybox"><b>Local preview</b><p style="font-size:.86rem;color:var(--muted)">Card payments run on Netlify, so they aren't available in this local preview. You can place a test order to check the flow. No payment is taken and nothing is sent.</p><button class="btn solid" data-testorder="1" style="width:100%">Place test order (no payment)</button></div>`
+      ${p&&p.mode==="test"?`<div class="paybox"><b>Preview mode</b><p style="font-size:.86rem;color:var(--muted)">Card payments run on Netlify, so they aren't available in this preview. You can place a test order to check the flow. No payment is taken and nothing is sent.</p><button class="btn solid" data-testorder="1" style="width:100%">Place test order (no payment)</button></div>`
         :`<button class="btn solid" data-place="1" style="width:100%;padding:1em" ${co.busy||!t.ok?"disabled":""}>${co.busy?"Starting secure payment…":`Continue to payment${t.ok?" · "+money(t.tot):""}`}</button>
       <p style="font-size:.8rem;color:var(--muted);text-align:center">Pay by card, Apple Pay or Google Pay through Airwallex. Charged in ${esc(curr())}.</p>`}
     </div>
@@ -1095,7 +1096,7 @@ function placeTestOrder(){
 function renderDone(){
   const o=co.order, cur=o.currency;
   $("#coBody").innerHTML=`<div class="codone"><span class="tick">✓</span><h1>${o.mode==="test"?`Test order ${esc(o.no)} placed`:`Thanks, order ${esc(o.no)} is paid`}</h1>
-    <p style="color:var(--muted)">${o.mode==="test"?"Local preview: no payment was taken and nothing was sent. On the live site this step goes through Airwallex.":`${o.sandbox?"Sandbox payment, so no real money moved. ":""}A confirmation email is on its way to ${esc(o.email)} from ${SELL()}.`}</p>
+    <p style="color:var(--muted)">${o.mode==="test"?"Preview mode: no payment was taken and nothing was sent. On the live site this step goes through Airwallex.":`${o.sandbox?"Sandbox payment, so no real money moved. ":""}A confirmation email is on its way to ${esc(o.email)} from ${SELL()}.`}</p>
     <div class="card2">${o.lines.map(l=>`<div class="sumrow"><span>${esc(l.name)}${l.finish?` (${esc((FINISH[l.finish]||{}).label||l.finish)})`:""} × ${l.qty} <small style="color:var(--muted)">${esc(l.code)}</small></span><span>${money(l.amount,cur)}</span></div>`).join("")}
       <div class="sumrow"><span>Freight to ${esc(o.country.name)}</span><span>${money(o.freight,cur)}</span></div>
       <div class="sumrow total"><span>${o.mode==="test"?"Total":"Total paid"}</span><span>${money(o.total,cur)} ${esc(cur)}</span></div>
