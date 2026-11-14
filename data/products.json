@@ -1,5 +1,5 @@
 {
- "_help": "price_aud is the real price in AUD (null = not set yet). example_price_aud is only used while testing (SHOW_EXAMPLE_PRICES in the site, AIRWALLEX_ENV=demo on the server). After editing, run npm run sync.",
+ "_help": "price_aud is the real price in AUD (null = not set yet). example_price_aud is only used while testing (SHOW_EXAMPLE_PRICES in the site, AIRWALLEX_ENV=demo on the server). After editing, run npm run sync. accessories: bathroom add-ons (cabinet hardware, bathroom accessories, shelving, electrical, mirrors, hinges and runners). Codes, sizes and prices are placeholders until the supplier confirms them; an accessory with no price shows \"Price coming soon\" and cannot be added to the cart. Electrical items need electrical.rcm_reg and electrical.cert_no before they can be sold.",
  "vanities": [
   {
    "id": "as813109-120",
@@ -1294,6 +1294,325 @@
    "img": "img/b-84-65-bwymj-013b-b.webp",
    "w": 559,
    "h": 224
+  }
+ ],
+ "accessories": [
+  {
+   "id": "bar-handle",
+   "group": "hardware",
+   "name": "Bar pull handle",
+   "code": "[CODE]",
+   "icon": "handle",
+   "finishes": [
+    "brass",
+    "gunmetal",
+    "black",
+    "chrome"
+   ],
+   "size": "[LENGTH] mm, [CENTRES] mm hole centres",
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "round-knob",
+   "group": "hardware",
+   "name": "Round cabinet knob",
+   "code": "[CODE]",
+   "icon": "knob",
+   "finishes": [
+    "brass",
+    "gunmetal",
+    "black",
+    "chrome"
+   ],
+   "size": "Ø [SIZE] mm",
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "edge-pull",
+   "group": "hardware",
+   "name": "Edge finger pull",
+   "code": "[CODE]",
+   "icon": "edgepull",
+   "finishes": [
+    "brass",
+    "gunmetal",
+    "black",
+    "chrome"
+   ],
+   "size": "[LENGTH] mm",
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "towel-rail",
+   "group": "bath-acc",
+   "name": "Single towel rail",
+   "code": "[CODE]",
+   "icon": "rail",
+   "finishes": [
+    "brass",
+    "gunmetal",
+    "black",
+    "chrome"
+   ],
+   "size": "[LENGTH] mm",
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "towel-ring",
+   "group": "bath-acc",
+   "name": "Towel ring",
+   "code": "[CODE]",
+   "icon": "ring",
+   "finishes": [
+    "brass",
+    "gunmetal",
+    "black",
+    "chrome"
+   ],
+   "size": "Ø [SIZE] mm",
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "robe-hook",
+   "group": "bath-acc",
+   "name": "Robe hook",
+   "code": "[CODE]",
+   "icon": "hook",
+   "finishes": [
+    "brass",
+    "gunmetal",
+    "black",
+    "chrome"
+   ],
+   "size": "[SIZE] mm",
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "roll-holder",
+   "group": "bath-acc",
+   "name": "Toilet roll holder",
+   "code": "[CODE]",
+   "icon": "roll",
+   "finishes": [
+    "brass",
+    "gunmetal",
+    "black",
+    "chrome"
+   ],
+   "size": "[SIZE] mm",
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "acc-set",
+   "group": "bath-acc",
+   "name": "Four-piece accessory set",
+   "code": "[CODE]",
+   "icon": "set",
+   "finishes": [
+    "brass",
+    "gunmetal",
+    "black",
+    "chrome"
+   ],
+   "size": "Towel rail, towel ring, robe hook and roll holder",
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "floating-shelf",
+   "group": "bath-shelving",
+   "name": "Floating shelf",
+   "code": "[CODE]",
+   "icon": "shelf",
+   "finishes": [],
+   "size": "[LENGTH] mm, [FINISH]",
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "towel-ladder",
+   "group": "bath-shelving",
+   "name": "Towel ladder",
+   "code": "[CODE]",
+   "icon": "ladder",
+   "finishes": [],
+   "size": "[HEIGHT] mm high, [FINISH]",
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "undersink-organiser",
+   "group": "bath-shelving",
+   "name": "Under-sink organiser",
+   "code": "[CODE]",
+   "icon": "organiser",
+   "finishes": [],
+   "size": "[WIDTH] mm wide",
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "vanity-wall-light",
+   "group": "electrical",
+   "name": "Vanity wall light",
+   "code": "[CODE]",
+   "icon": "walllight",
+   "finishes": [
+    "brass",
+    "gunmetal",
+    "black",
+    "chrome"
+   ],
+   "size": "[LENGTH] mm, [WATTS] W LED, IP[RATING]",
+   "electrical": {
+    "rcm_reg": "",
+    "cert_no": "",
+    "standard": "AS/NZS 60598 (luminaires) or AS/NZS 60335 (heated rails)",
+    "install": "Hardwired. Must be installed by a licensed electrician."
+   },
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "heated-towel-rail",
+   "group": "electrical",
+   "name": "Heated towel rail",
+   "code": "[CODE]",
+   "icon": "heatedrail",
+   "finishes": [
+    "brass",
+    "gunmetal",
+    "black",
+    "chrome"
+   ],
+   "size": "[WIDTH] × [HEIGHT] mm, [WATTS] W",
+   "electrical": {
+    "rcm_reg": "",
+    "cert_no": "",
+    "standard": "AS/NZS 60598 (luminaires) or AS/NZS 60335 (heated rails)",
+    "install": "Hardwired. Must be installed by a licensed electrician."
+   },
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "led-mirror-as913046a",
+   "group": "electrical",
+   "name": "LED mirror AS913046A",
+   "code": "AS913046A",
+   "icon": "ledmirror",
+   "finishes": [],
+   "size": "500 × 850 mm",
+   "pairs": "as813046a-100",
+   "electrical": {
+    "rcm_reg": "",
+    "cert_no": "",
+    "standard": "AS/NZS 60598 (luminaires) or AS/NZS 60335 (heated rails)",
+    "install": "Hardwired. Must be installed by a licensed electrician."
+   },
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "led-mirror-as913050-120",
+   "group": "electrical",
+   "name": "LED mirror AS913050-120",
+   "code": "AS913050-120",
+   "icon": "ledmirror",
+   "finishes": [],
+   "size": "1200 × 600 mm",
+   "pairs": "as813050a-120",
+   "electrical": {
+    "rcm_reg": "",
+    "cert_no": "",
+    "standard": "AS/NZS 60598 (luminaires) or AS/NZS 60335 (heated rails)",
+    "install": "Hardwired. Must be installed by a licensed electrician."
+   },
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "led-mirror-kl913003",
+   "group": "electrical",
+   "name": "LED mirror KL913003",
+   "code": "KL913003",
+   "icon": "ledmirror",
+   "finishes": [],
+   "size": "1000 × 700 mm",
+   "pairs": "kl813003-100",
+   "electrical": {
+    "rcm_reg": "",
+    "cert_no": "",
+    "standard": "AS/NZS 60598 (luminaires) or AS/NZS 60335 (heated rails)",
+    "install": "Hardwired. Must be installed by a licensed electrician."
+   },
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "mirror-as913109",
+   "group": "mirrors",
+   "name": "Mirror cabinet AS913109-120",
+   "code": "AS913109-120",
+   "icon": "mirrorcab",
+   "finishes": [],
+   "size": "1200 × 750 mm",
+   "pairs": "as813109-120",
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "mirror-as913117",
+   "group": "mirrors",
+   "name": "Timber-framed mirror AS913117",
+   "code": "AS913117",
+   "icon": "mirror",
+   "finishes": [],
+   "size": "400 × 900 mm",
+   "pairs": "as813117",
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "mirror-kl913023a",
+   "group": "mirrors",
+   "name": "Mirror KL913023A",
+   "code": "KL913023A",
+   "icon": "mirror",
+   "finishes": [],
+   "size": "800 × 900 mm",
+   "pairs": "kl813023a",
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "softclose-hinge",
+   "group": "hinges",
+   "name": "Soft-close hinge (pair)",
+   "code": "[CODE]",
+   "icon": "hinge",
+   "finishes": [],
+   "size": "[OVERLAY] overlay, [ANGLE]° opening",
+   "price_aud": null,
+   "example_price_aud": null
+  },
+  {
+   "id": "drawer-runners",
+   "group": "hinges",
+   "name": "Soft-close drawer runners (pair)",
+   "code": "[CODE]",
+   "icon": "runner",
+   "finishes": [],
+   "size": "[LENGTH] mm, [LOAD] kg rated",
+   "price_aud": null,
+   "example_price_aud": null
   }
  ]
 }

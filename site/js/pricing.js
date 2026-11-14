@@ -43,9 +43,30 @@
     return !!(t && t.wels && t.wels.reg && t.wels.stars && t.wels.flow && t.watermark);
   }
 
-  /* Cart ids: a vanity id, or "tap:<model>:<finish>". */
+  /* Electrical add-ons (LED mirrors, wall lights, heated rails) need their RCM registration
+     and certificate of conformity numbers before they can be sold in Australia. */
+  function electricalCompliant(a) {
+    return !!(a && a.electrical && a.electrical.rcm_reg && a.electrical.cert_no);
+  }
+  function compliant(it) {
+    if (it.kind === "tap") return tapCompliant(it.entry);
+    if (it.kind === "accessory" && it.entry.electrical) return electricalCompliant(it.entry);
+    return true;
+  }
+
+  /* Cart ids: a vanity id, "tap:<model>:<finish>", or "acc:<id>" / "acc:<id>:<finish>". */
   function resolveItem(id, products) {
     if (typeof id !== "string" || !products) return null;
+    if (id.indexOf("acc:") === 0) {
+      var ap = id.split(":"), accs = products.accessories || [];
+      for (var k = 0; k < accs.length; k++) {
+        var a = accs[k], fins = a.finishes || [];
+        if (a.id !== ap[1]) continue;
+        if (fins.length && ap.length === 3 && fins.indexOf(ap[2]) !== -1) return { kind: "accessory", entry: a, finish: ap[2] };
+        if (!fins.length && ap.length === 2) return { kind: "accessory", entry: a, finish: null };
+      }
+      return null;
+    }
     if (id.indexOf("tap:") === 0) {
       var parts = id.split(":"), tid = parts[1], fin = parts[2];
       var taps = products.tap_models || [];
@@ -67,12 +88,12 @@
     return { amount: convert(p.aud, country), currency: country.currency, example: p.example };
   }
 
-  /* Freight in the country's own currency. Taps ride free in a vanity's carton;
-     a taps-only order pays the parcel rate. */
-  function freightFor(country, vanities, taps, allowExamples) {
+  /* Freight in the country's own currency. Small items (taps, accessories) ride free in a
+     vanity's carton; an order of small items only pays the small-parcel rate. */
+  function freightFor(country, vanities, smalls, allowExamples) {
     if (!country) return { amount: null, example: false, reason: "unknown_country" };
-    if (!vanities && !taps) return { amount: 0, example: false };
-    var key = vanities ? "per_vanity" : "tap_only", units = vanities ? vanities : 1;
+    if (!vanities && !smalls) return { amount: 0, example: false };
+    var key = vanities ? "per_vanity" : "small_parcel", units = vanities ? vanities : 1;
     var real = num((country.freight || {})[key]);
     if (real != null) return { amount: r2(real * units), example: false };
     var ex = num((country.example_freight || {})[key]);
@@ -92,7 +113,7 @@
     if (!Array.isArray(items) || !items.length) return fail(400, "empty", "Your cart is empty.");
     if (items.length > 50) return fail(400, "bad_item", "Too many lines in one order.");
 
-    var seen = {}, lines = [], subtotal = 0, vanities = 0, taps = 0, example = false;
+    var seen = {}, lines = [], subtotal = 0, vanities = 0, smalls = 0, example = false;
     for (var i = 0; i < items.length; i++) {
       var row = items[i] || {}, q = row.q;
       if (typeof q !== "number" || q % 1 !== 0 || q < 1 || q > MAX_QTY) return fail(400, "bad_qty", "Quantities must be whole numbers from 1 to " + MAX_QTY + ".");
@@ -101,15 +122,16 @@
       var it = resolveItem(row.id, ctx.products);
       if (!it) return fail(400, "bad_item", "One item in your cart is no longer available. Remove it and try again.");
       if (it.kind === "tap" && !tapCompliant(it.entry)) return fail(409, "tap_not_compliant", "The " + it.entry.name + " can't be sold yet: its WELS and WaterMark numbers haven't been added. Remove it to place the order.");
+      if (!compliant(it)) return fail(409, "electrical_not_compliant", "The " + it.entry.name + " can't be sold yet: its RCM registration and electrical certificate haven't been added. Remove it to place the order.");
       var p = catalogPrice(it.entry, ctx.allowExamples);
       if (!p) return fail(409, "no_price", "The " + (it.entry.name || row.id) + " hasn't been priced yet.");
       var unit = convert(p.aud, country), amount = r2(unit * q);
       example = example || p.example;
-      if (it.kind === "vanity") vanities += q; else taps += q;
+      if (it.kind === "vanity") vanities += q; else smalls += q;
       subtotal = r2(subtotal + amount);
       lines.push({ id: row.id, kind: it.kind, name: it.entry.name, code: it.entry.code, finish: it.finish, qty: q, unit: unit, amount: amount });
     }
-    var f = freightFor(country, vanities, taps, ctx.allowExamples);
+    var f = freightFor(country, vanities, smalls, ctx.allowExamples);
     if (f.amount == null) return fail(409, "freight_unavailable", "Freight to " + country.name + " hasn't been set yet.");
     example = example || f.example;
     return {
@@ -121,7 +143,8 @@
 
   return {
     MAX_QTY: MAX_QTY, num: num, r2: r2, findCountry: findCountry, pricesReady: pricesReady,
-    catalogPrice: catalogPrice, convert: convert, tapCompliant: tapCompliant, resolveItem: resolveItem,
+    catalogPrice: catalogPrice, convert: convert, tapCompliant: tapCompliant, electricalCompliant: electricalCompliant,
+    compliant: compliant, resolveItem: resolveItem,
     itemUnit: itemUnit, freightFor: freightFor, quote: quote
   };
 });
