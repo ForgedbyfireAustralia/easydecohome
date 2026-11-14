@@ -68,6 +68,15 @@ test("accessories: ids with and without finishes, price gate, small-parcel freig
   assert.equal(withVanity.freight, 240);
 });
 
+test("the $29 test tap charges for real in production, with no freight", () => {
+  const q = P.quote({ country: "AU", items: [{ id: "acc:test-tap", q: 1 }] }, ctx({ allowExamples: false }));
+  assert.equal(q.ok, true, q.error);
+  assert.equal(q.subtotal, 29);
+  assert.equal(q.freight, 0);
+  assert.equal(q.total, 29);
+  assert.equal(q.example, false);
+});
+
 test("electrical add-ons are blocked until RCM and certificate numbers are filled in", () => {
   const p = clone(products);
   const light = p.accessories.find((a) => a.id === "vanity-wall-light");

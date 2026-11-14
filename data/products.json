@@ -1613,6 +1613,19 @@
    "size": "[LENGTH] mm, [LOAD] kg rated",
    "price_aud": null,
    "example_price_aud": null
+  },
+  {
+   "id": "test-tap",
+   "group": "test",
+   "name": "Test tap (payment test, do not buy)",
+   "code": "TEST-TAP",
+   "icon": "tap",
+   "finishes": [],
+   "size": "Test item for checking real payments end to end. Nothing is shipped.",
+   "hidden": true,
+   "ships_free": true,
+   "price_aud": 29,
+   "example_price_aud": null
   }
  ]
 }

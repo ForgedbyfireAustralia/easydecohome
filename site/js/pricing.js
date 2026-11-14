@@ -130,7 +130,7 @@
       if (!p) return fail(409, "no_price", the(it.entry.name || row.id) + " hasn't been priced yet.");
       var unit = convert(p.aud, country), amount = r2(unit * q);
       example = example || p.example;
-      if (it.kind === "vanity") vanities += q; else smalls += q;
+      if (it.kind === "vanity") vanities += q; else if (!it.entry.ships_free) smalls += q; // ships_free: test items, no freight
       subtotal = r2(subtotal + amount);
       lines.push({ id: row.id, kind: it.kind, name: it.entry.name, code: it.entry.code, finish: it.finish, qty: q, unit: unit, amount: amount });
     }
