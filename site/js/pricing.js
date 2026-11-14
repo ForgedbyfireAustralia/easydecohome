@@ -101,6 +101,9 @@
     return { amount: null, example: false, reason: "freight_unavailable" };
   }
 
+  /* "The Noosa" stays as is; "Basin mixer" becomes "The Basin mixer". */
+  function the(name) { return /^the /i.test(name) ? name : "The " + name; }
+
   function fail(status, code, message) { return { ok: false, status: status, code: code, error: message }; }
 
   /* order = { country: "AU", items: [{ id, q }] }
@@ -121,10 +124,10 @@
       seen[row.id] = true;
       var it = resolveItem(row.id, ctx.products);
       if (!it) return fail(400, "bad_item", "One item in your cart is no longer available. Remove it and try again.");
-      if (it.kind === "tap" && !tapCompliant(it.entry)) return fail(409, "tap_not_compliant", "The " + it.entry.name + " can't be sold yet: its WELS and WaterMark numbers haven't been added. Remove it to place the order.");
-      if (!compliant(it)) return fail(409, "electrical_not_compliant", "The " + it.entry.name + " can't be sold yet: its RCM registration and electrical certificate haven't been added. Remove it to place the order.");
+      if (it.kind === "tap" && !tapCompliant(it.entry)) return fail(409, "tap_not_compliant", the(it.entry.name) + " can't be sold yet: its WELS and WaterMark numbers haven't been added. Remove it to place the order.");
+      if (!compliant(it)) return fail(409, "electrical_not_compliant", the(it.entry.name) + " can't be sold yet: its RCM registration and electrical certificate haven't been added. Remove it to place the order.");
       var p = catalogPrice(it.entry, ctx.allowExamples);
-      if (!p) return fail(409, "no_price", "The " + (it.entry.name || row.id) + " hasn't been priced yet.");
+      if (!p) return fail(409, "no_price", the(it.entry.name || row.id) + " hasn't been priced yet.");
       var unit = convert(p.aud, country), amount = r2(unit * q);
       example = example || p.example;
       if (it.kind === "vanity") vanities += q; else smalls += q;
