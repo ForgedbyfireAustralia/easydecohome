@@ -1,8 +1,33 @@
 {
   "origin": "China",
   "currency_default": "AUD",
+  "_help": "Edit this file, then run `npm run sync` to copy it into site/index.html. Anything in [BRACKETS] is a placeholder: a country can't take orders until its fx_from_aud and freight are real numbers. fx_from_aud converts the AUD prices in products.json into this country's currency. rounding is the step prices are rounded to after conversion (1 = whole units, 0.01 = cents). Freight amounts are in the country's own currency. example_freight is only used for sandbox testing (AIRWALLEX_ENV=demo) and is never charged in production.",
   "countries": [
-    {"code": "AU", "name": "Australia", "freight": "[FREIGHT AUD]", "lead_time_weeks": "[3-6]"},
-    {"code": "NZ", "name": "New Zealand", "freight": "[FREIGHT NZD]", "lead_time_weeks": "[3-6]"}
+    {
+      "code": "AU",
+      "name": "Australia",
+      "currency": "AUD",
+      "fx_from_aud": 1,
+      "rounding": "[ROUNDING]",
+      "freight": { "per_vanity": "[FREIGHT AUD]", "tap_only": "[FREIGHT AUD]" },
+      "example_freight": { "per_vanity": 240, "tap_only": 15 },
+      "lead_time_weeks": "[3–6]",
+      "postcode_pattern": "^\\d{4}$",
+      "region_label": "State",
+      "regions": ["ACT", "NSW", "NT", "QLD", "SA", "TAS", "VIC", "WA"]
+    },
+    {
+      "code": "NZ",
+      "name": "New Zealand",
+      "currency": "NZD",
+      "fx_from_aud": "[FX AUD→NZD]",
+      "rounding": "[ROUNDING]",
+      "freight": { "per_vanity": "[FREIGHT NZD]", "tap_only": "[FREIGHT NZD]" },
+      "example_freight": null,
+      "lead_time_weeks": "[3–6]",
+      "postcode_pattern": "^\\d{4}$",
+      "region_label": "Region",
+      "regions": []
+    }
   ]
 }
