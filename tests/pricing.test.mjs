@@ -49,6 +49,45 @@ test("taps without WELS and WaterMark numbers are blocked", () => {
   assert.equal(q.code, "tap_not_compliant");
 });
 
+test("accessories: ids with and without finishes, price gate, small-parcel freight", () => {
+  const p = clone(products);
+  const set = p.accessories.find((a) => a.id === "acc-set");
+  const shelf = p.accessories.find((a) => a.id === "floating-shelf");
+  assert.equal(P.resolveItem("acc:acc-set:black", p).finish, "black");
+  assert.equal(P.resolveItem("acc:acc-set", p), null); // finish required
+  assert.equal(P.resolveItem("acc:floating-shelf:black", p), null); // no finishes offered
+  assert.equal(P.resolveItem("acc:floating-shelf", p).kind, "accessory");
+  assert.equal(P.quote({ country: "AU", items: [{ id: "acc:acc-set:black", q: 1 }] }, ctx({ products: p })).code, "no_price");
+  set.price_aud = 149;
+  shelf.price_aud = 59;
+  const alone = P.quote({ country: "AU", items: [{ id: "acc:acc-set:black", q: 1 }, { id: "acc:floating-shelf", q: 2 }] }, ctx({ products: p }));
+  assert.equal(alone.subtotal, 149 + 59 * 2);
+  assert.equal(alone.freight, 15);
+  assert.equal(alone.lines[0].kind, "accessory");
+  const withVanity = P.quote({ country: "AU", items: [{ id: "as813109-120", q: 1 }, { id: "acc:acc-set:black", q: 1 }] }, ctx({ products: p }));
+  assert.equal(withVanity.freight, 240);
+});
+
+test("the $29 test tap charges for real in production, with no freight", () => {
+  const q = P.quote({ country: "AU", items: [{ id: "acc:test-tap", q: 1 }] }, ctx({ allowExamples: false }));
+  assert.equal(q.ok, true, q.error);
+  assert.equal(q.subtotal, 29);
+  assert.equal(q.freight, 0);
+  assert.equal(q.total, 29);
+  assert.equal(q.example, false);
+});
+
+test("electrical add-ons are blocked until RCM and certificate numbers are filled in", () => {
+  const p = clone(products);
+  const light = p.accessories.find((a) => a.id === "vanity-wall-light");
+  light.price_aud = 199;
+  const q = P.quote({ country: "AU", items: [{ id: "acc:vanity-wall-light:black", q: 1 }] }, ctx({ products: p }));
+  assert.equal(q.code, "electrical_not_compliant");
+  light.electrical.rcm_reg = "RCM-123";
+  light.electrical.cert_no = "COC-456";
+  assert.equal(P.quote({ country: "AU", items: [{ id: "acc:vanity-wall-light:black", q: 1 }] }, ctx({ products: p })).ok, true);
+});
+
 test("compliant taps: free in a vanity carton, parcel rate on their own", () => {
   const p = compliant(products);
   const withVanity = P.quote({ country: "AU", items: [{ id: "as813109-120", q: 1 }, { id: "tap:tall:brass", q: 1 }] }, ctx({ products: p }));
@@ -68,7 +107,7 @@ test("New Zealand is closed until it has an exchange rate", () => {
 test("currency conversion and rounding per country", () => {
   const s = clone(shipping);
   const nz = s.countries.find((c) => c.code === "NZ");
-  Object.assign(nz, { fx_from_aud: 1.0937, rounding: 1, freight: { per_vanity: 199, tap_only: 25 } });
+  Object.assign(nz, { fx_from_aud: 1.0937, rounding: 1, freight: { per_vanity: 199, small_parcel: 25 } });
   const q = P.quote({ country: "NZ", items: [{ id: "as813109-120", q: 1 }] }, ctx({ shipping: s, allowExamples: true }));
   assert.equal(q.currency, "NZD");
   assert.equal(q.subtotal, Math.round(1090 * 1.0937)); // 1192

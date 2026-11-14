@@ -19,7 +19,7 @@ site/collection.html   gallery of all vanities and the basin library (read-only 
 site/referral.html     affiliate/referrer demo (in-memory only; optional)
 site/img/              117 WebP images (vanity id + "-1.webp", "-2.webp", ...)
 site/js/pricing.js     THE order maths (prices, currency, rounding, freight, tap gate). Used by the page AND the payment function
-data/products.json     17 vanities, 3 tap models, finishes, 65 basins. price_aud = real price (null = unset), example_price_aud = testing only
+data/products.json     17 vanities, 3 tap models, 21 accessories, finishes, 65 basins. price_aud = real price (null = unset), example_price_aud = testing only
 data/shipping.json     countries: currency, fx_from_aud, rounding, freight, example_freight, lead time, postcode/regions
 scripts/sync-data.mjs  `npm run sync` copies data/*.json into site/index.html (the /*@sync:...*/ blocks). Never hand-edit those blocks
 netlify/functions/create-payment.mts     server total via pricing.js -> pending order in Blobs -> Airwallex PaymentIntent
@@ -67,6 +67,11 @@ source/                supplier PDFs and raw photos, git-ignored, never publishe
   - Offered as an add-on in four places: Complete the look, the cart drawer after a vanity is added, the checkout reminder, and the Tapware band.
   - Also sold on its own.
   - Taps are matched to the basin type. The add button toggles: Added ✓, then Remove.
+- **Finishing touches (`#accessories`):**
+  - Bathroom-only range (no kitchens): bathroom accessories, handles and knobs, shelving, lighting and heated rails, mirrors, hinges and runners. Data is `accessories` in products.json; cart ids are `acc:<id>` or `acc:<id>:<finish>`.
+  - Codes, sizes and prices are placeholders. Unpriced items show "Price coming soon" and "Ask about it" (prefills the enquiry form); once `price_aud` is set and synced they get Add to cart.
+  - Electrical items (`electrical` block) need `rcm_reg` and `cert_no` before checkout accepts them, on the page and on the server.
+  - Small items (taps and accessories) ship free in a vanity carton; on their own they pay `small_parcel` freight.
 - **Cart:**
   - Stored in localStorage `bb-cart`; saved items in `bb-saved-v2`.
   - Checkout has three steps: details, delivery (country + address), payment. "Continue to payment" calls create-payment, then mounts the Airwallex Drop-in (cards, Apple Pay, Google Pay). Order numbers look like `EDH-261113-K7QPX`.

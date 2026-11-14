@@ -19,6 +19,10 @@ const catalog = {
   tap_models: products.tap_models.map(({ id, name, code, finishes, price_aud, example_price_aud, wels, watermark }) => ({
     id, name, code, finishes, price_aud, example_price_aud, wels, watermark,
   })),
+  accessories: (products.accessories || []).map(({ id, group, name, code, icon, finishes, size, pairs, electrical, hidden, ships_free, price_aud, example_price_aud }) => ({
+    id, group, name, code, icon, finishes, size, pairs: pairs || null, electrical: electrical || null,
+    hidden: !!hidden, ships_free: !!ships_free, price_aud, example_price_aud,
+  })),
 };
 const { _help, ...ship } = shipping;
 

@@ -282,6 +282,8 @@ html{scroll-behavior:smooth}
 .tcard{display:grid;gap:8px;align-content:start;border:1px solid var(--line);border-radius:16px;padding:12px;background:var(--bg)}
 .tcard .tpic{border:0;padding:0;background:var(--sand);border-radius:12px;aspect-ratio:4/3;display:grid;place-items:center;cursor:pointer;overflow:hidden;width:100%}
 .tcard .tpic svg{height:86%;width:auto}
+#agrid .tpic{cursor:default}
+#agrid .tpic svg{height:78%;max-width:88%}
 .tcard .name{font-weight:700}
 .tcard .fits{font-size:.8rem;color:var(--muted)}
 .sw-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -404,6 +406,7 @@ html{scroll-behavior:smooth}
     <a href="#widths">Size</a>
     <a href="#help">Design help</a>
     <a href="#installs">Gallery</a>
+    <a href="#accessories">Accessories</a>
     <a href="#trade">Trade</a>
   </nav>
 </header>
@@ -472,6 +475,11 @@ html{scroll-behavior:smooth}
   <section id="tapware" class="taps-band" style="padding:0"><div class="wrap">
     <div class="sec-head" style="margin-bottom:8px"><div><h2 style="font-size:1.5rem">Tapware</h2><p>Mixers chosen to suit our vanities. Add them to a vanity order and they ship in the same carton.</p></div><div class="ttabs" role="group" aria-label="Tap type" id="ttabs"></div></div>
     <div class="tgrid" id="tgrid"></div>
+  </div></section>
+
+  <section id="accessories" style="padding-top:40px"><div class="wrap">
+    <div class="sec-head" style="margin-bottom:8px"><div><h2>Finishing touches</h2><p>Towel rails, handles, shelving, mirrors and lighting to match your vanity. Ordered with a vanity, they ship in the same carton.</p></div><div class="ttabs" role="group" aria-label="Accessory type" id="atabs"></div></div>
+    <div class="tgrid" id="agrid"></div>
   </div></section>
 
   <section style="padding-top:40px"><div class="wrap">
@@ -544,7 +552,7 @@ html{scroll-behavior:smooth}
 <footer>
   <div class="wrap fcols">
     <div><span class="logo">easy<i>deco</i>home</span><p style="opacity:.75;font-size:.88rem;margin-top:12px;max-width:30ch">Bathroom vanities, basins and tapware, shipped direct from our factory to your door. easydecohome.com.au</p></div>
-    <div><h4>Shop</h4><ul><li><a href="#shop">All vanities</a></li><li><a href="#finishes">By look</a></li><li><a href="#widths">By size</a></li><li><a href="#tapware">Tapware</a></li></ul></div>
+    <div><h4>Shop</h4><ul><li><a href="#shop">All vanities</a></li><li><a href="#finishes">By look</a></li><li><a href="#widths">By size</a></li><li><a href="#tapware">Tapware</a></li><li><a href="#accessories">Accessories</a></li></ul></div>
     <div><h4>Help</h4><ul><li><a href="#help">Measuring</a></li><li><a href="#delivery">Delivery</a></li><li><a href="#faq">FAQ</a></li></ul></div>
     <div><h4>Explore</h4><ul><li><a href="#installs">Gallery</a></li><li><a href="#trade">Trade</a></li><li><a href="#enquire">Contact</a></li></ul></div>
   </div>
@@ -595,8 +603,8 @@ PIECES.forEach(p=>{p.desc=p.name; p.name=NAMES[p.id]||p.name;});
    Don't edit these two blocks by hand. Prices (price_aud) live in data/products.json and countries,
    freight, exchange rates and lead times in data/shipping.json. Run `npm run sync` to copy them here.
    The maths is in js/pricing.js, the same file the payment function uses to charge. */
-/*@sync:shipping*/const SHIPPING={"origin":"China","currency_default":"AUD","countries":[{"code":"AU","name":"Australia","currency":"AUD","fx_from_aud":1,"rounding":"[ROUNDING]","freight":{"per_vanity":"[FREIGHT AUD]","tap_only":"[FREIGHT AUD]"},"example_freight":{"per_vanity":240,"tap_only":15},"lead_time_weeks":"[3–6]","postcode_pattern":"^\\d{4}$","region_label":"State","regions":["ACT","NSW","NT","QLD","SA","TAS","VIC","WA"]},{"code":"NZ","name":"New Zealand","currency":"NZD","fx_from_aud":"[FX AUD→NZD]","rounding":"[ROUNDING]","freight":{"per_vanity":"[FREIGHT NZD]","tap_only":"[FREIGHT NZD]"},"example_freight":null,"lead_time_weeks":"[3–6]","postcode_pattern":"^\\d{4}$","region_label":"Region","regions":[]}]};/*@end*/
-/*@sync:catalog*/const CATALOG={"vanities":[{"id":"as813109-120","name":"The Noosa","code":"AS813109-120","price_aud":null,"example_price_aud":1090},{"id":"as813046a-100","name":"The Byron","code":"AS813046A-100","price_aud":null,"example_price_aud":890},{"id":"kl813024-120","name":"The Daintree","code":"KL813024-120","price_aud":null,"example_price_aud":1090},{"id":"as813117","name":"The Yamba","code":"AS813117","price_aud":null,"example_price_aud":790},{"id":"kl810971-150","name":"The Whitsunday","code":"KL810971-150","price_aud":null,"example_price_aud":1390},{"id":"as813046c-100","name":"The Kuranda","code":"AS813046C-100","price_aud":null,"example_price_aud":1090},{"id":"kl813023a","name":"The Hamilton","code":"KL813023A","price_aud":null,"example_price_aud":1290},{"id":"as813045-90","name":"The Coolum","code":"AS813045-90","price_aud":null,"example_price_aud":790},{"id":"kl813003-100","name":"The Agnes","code":"KL813003-100","price_aud":null,"example_price_aud":890},{"id":"kl810892a-80","name":"The Eumundi","code":"KL810892A-80","price_aud":null,"example_price_aud":690},{"id":"as813050a-120","name":"The Peregian","code":"AS813050A-120","price_aud":null,"example_price_aud":1090},{"id":"kl813027a-120","name":"The Glasshouse","code":"KL813027A-120","price_aud":null,"example_price_aud":1090},{"id":"as810879a-90","name":"The Emu Park","code":"AS810879A-90","price_aud":null,"example_price_aud":790},{"id":"as810879b-90","name":"The Yeppoon","code":"AS810879B-90","price_aud":null,"example_price_aud":790},{"id":"kl813019-100","name":"The Capricorn","code":"KL813019-100","price_aud":null,"example_price_aud":890},{"id":"kl813001a-120","name":"The Carnarvon","code":"KL813001A-120","price_aud":null,"example_price_aud":1090},{"id":"as813050b-100","name":"The Fitzroy","code":"AS813050B-100","price_aud":null,"example_price_aud":890}],"tap_models":[{"id":"tall","name":"Tall vessel mixer","code":"[TAP CODE]","finishes":["brass","gunmetal","black","chrome"],"price_aud":null,"example_price_aud":289,"wels":{"reg":"","stars":"","flow":""},"watermark":""},{"id":"basin","name":"Basin mixer","code":"[TAP CODE]","finishes":["brass","gunmetal","black","chrome"],"price_aud":null,"example_price_aud":229,"wels":{"reg":"","stars":"","flow":""},"watermark":""},{"id":"wall","name":"Wall mixer and spout set","code":"[TAP CODE]","finishes":["brass","gunmetal","black","chrome"],"price_aud":null,"example_price_aud":349,"wels":{"reg":"","stars":"","flow":""},"watermark":""}]};/*@end*/
+/*@sync:shipping*/const SHIPPING={"origin":"China","currency_default":"AUD","countries":[{"code":"AU","name":"Australia","currency":"AUD","fx_from_aud":1,"rounding":"[ROUNDING]","freight":{"per_vanity":"[FREIGHT AUD]","small_parcel":"[FREIGHT AUD]"},"example_freight":{"per_vanity":240,"small_parcel":15},"lead_time_weeks":"[3–6]","postcode_pattern":"^\\d{4}$","region_label":"State","regions":["ACT","NSW","NT","QLD","SA","TAS","VIC","WA"]},{"code":"NZ","name":"New Zealand","currency":"NZD","fx_from_aud":"[FX AUD→NZD]","rounding":"[ROUNDING]","freight":{"per_vanity":"[FREIGHT NZD]","small_parcel":"[FREIGHT NZD]"},"example_freight":null,"lead_time_weeks":"[3–6]","postcode_pattern":"^\\d{4}$","region_label":"Region","regions":[]}]};/*@end*/
+/*@sync:catalog*/const CATALOG={"vanities":[{"id":"as813109-120","name":"The Noosa","code":"AS813109-120","price_aud":null,"example_price_aud":1090},{"id":"as813046a-100","name":"The Byron","code":"AS813046A-100","price_aud":null,"example_price_aud":890},{"id":"kl813024-120","name":"The Daintree","code":"KL813024-120","price_aud":null,"example_price_aud":1090},{"id":"as813117","name":"The Yamba","code":"AS813117","price_aud":null,"example_price_aud":790},{"id":"kl810971-150","name":"The Whitsunday","code":"KL810971-150","price_aud":null,"example_price_aud":1390},{"id":"as813046c-100","name":"The Kuranda","code":"AS813046C-100","price_aud":null,"example_price_aud":1090},{"id":"kl813023a","name":"The Hamilton","code":"KL813023A","price_aud":null,"example_price_aud":1290},{"id":"as813045-90","name":"The Coolum","code":"AS813045-90","price_aud":null,"example_price_aud":790},{"id":"kl813003-100","name":"The Agnes","code":"KL813003-100","price_aud":null,"example_price_aud":890},{"id":"kl810892a-80","name":"The Eumundi","code":"KL810892A-80","price_aud":null,"example_price_aud":690},{"id":"as813050a-120","name":"The Peregian","code":"AS813050A-120","price_aud":null,"example_price_aud":1090},{"id":"kl813027a-120","name":"The Glasshouse","code":"KL813027A-120","price_aud":null,"example_price_aud":1090},{"id":"as810879a-90","name":"The Emu Park","code":"AS810879A-90","price_aud":null,"example_price_aud":790},{"id":"as810879b-90","name":"The Yeppoon","code":"AS810879B-90","price_aud":null,"example_price_aud":790},{"id":"kl813019-100","name":"The Capricorn","code":"KL813019-100","price_aud":null,"example_price_aud":890},{"id":"kl813001a-120","name":"The Carnarvon","code":"KL813001A-120","price_aud":null,"example_price_aud":1090},{"id":"as813050b-100","name":"The Fitzroy","code":"AS813050B-100","price_aud":null,"example_price_aud":890}],"tap_models":[{"id":"tall","name":"Tall vessel mixer","code":"[TAP CODE]","finishes":["brass","gunmetal","black","chrome"],"price_aud":null,"example_price_aud":289,"wels":{"reg":"","stars":"","flow":""},"watermark":""},{"id":"basin","name":"Basin mixer","code":"[TAP CODE]","finishes":["brass","gunmetal","black","chrome"],"price_aud":null,"example_price_aud":229,"wels":{"reg":"","stars":"","flow":""},"watermark":""},{"id":"wall","name":"Wall mixer and spout set","code":"[TAP CODE]","finishes":["brass","gunmetal","black","chrome"],"price_aud":null,"example_price_aud":349,"wels":{"reg":"","stars":"","flow":""},"watermark":""}],"accessories":[{"id":"bar-handle","group":"hardware","name":"Bar pull handle","code":"[CODE]","icon":"handle","finishes":["brass","gunmetal","black","chrome"],"size":"[LENGTH] mm, [CENTRES] mm hole centres","pairs":null,"electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"round-knob","group":"hardware","name":"Round cabinet knob","code":"[CODE]","icon":"knob","finishes":["brass","gunmetal","black","chrome"],"size":"Ø [SIZE] mm","pairs":null,"electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"edge-pull","group":"hardware","name":"Edge finger pull","code":"[CODE]","icon":"edgepull","finishes":["brass","gunmetal","black","chrome"],"size":"[LENGTH] mm","pairs":null,"electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"towel-rail","group":"bath-acc","name":"Single towel rail","code":"[CODE]","icon":"rail","finishes":["brass","gunmetal","black","chrome"],"size":"[LENGTH] mm","pairs":null,"electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"towel-ring","group":"bath-acc","name":"Towel ring","code":"[CODE]","icon":"ring","finishes":["brass","gunmetal","black","chrome"],"size":"Ø [SIZE] mm","pairs":null,"electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"robe-hook","group":"bath-acc","name":"Robe hook","code":"[CODE]","icon":"hook","finishes":["brass","gunmetal","black","chrome"],"size":"[SIZE] mm","pairs":null,"electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"roll-holder","group":"bath-acc","name":"Toilet roll holder","code":"[CODE]","icon":"roll","finishes":["brass","gunmetal","black","chrome"],"size":"[SIZE] mm","pairs":null,"electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"acc-set","group":"bath-acc","name":"Four-piece accessory set","code":"[CODE]","icon":"set","finishes":["brass","gunmetal","black","chrome"],"size":"Towel rail, towel ring, robe hook and roll holder","pairs":null,"electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"floating-shelf","group":"bath-shelving","name":"Floating shelf","code":"[CODE]","icon":"shelf","finishes":[],"size":"[LENGTH] mm, [FINISH]","pairs":null,"electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"towel-ladder","group":"bath-shelving","name":"Towel ladder","code":"[CODE]","icon":"ladder","finishes":[],"size":"[HEIGHT] mm high, [FINISH]","pairs":null,"electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"undersink-organiser","group":"bath-shelving","name":"Under-sink organiser","code":"[CODE]","icon":"organiser","finishes":[],"size":"[WIDTH] mm wide","pairs":null,"electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"vanity-wall-light","group":"electrical","name":"Vanity wall light","code":"[CODE]","icon":"walllight","finishes":["brass","gunmetal","black","chrome"],"size":"[LENGTH] mm, [WATTS] W LED, IP[RATING]","pairs":null,"electrical":{"rcm_reg":"","cert_no":"","standard":"AS/NZS 60598 (luminaires) or AS/NZS 60335 (heated rails)","install":"Hardwired. Must be installed by a licensed electrician."},"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"heated-towel-rail","group":"electrical","name":"Heated towel rail","code":"[CODE]","icon":"heatedrail","finishes":["brass","gunmetal","black","chrome"],"size":"[WIDTH] × [HEIGHT] mm, [WATTS] W","pairs":null,"electrical":{"rcm_reg":"","cert_no":"","standard":"AS/NZS 60598 (luminaires) or AS/NZS 60335 (heated rails)","install":"Hardwired. Must be installed by a licensed electrician."},"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"led-mirror-as913046a","group":"electrical","name":"LED mirror AS913046A","code":"AS913046A","icon":"ledmirror","finishes":[],"size":"500 × 850 mm","pairs":"as813046a-100","electrical":{"rcm_reg":"","cert_no":"","standard":"AS/NZS 60598 (luminaires) or AS/NZS 60335 (heated rails)","install":"Hardwired. Must be installed by a licensed electrician."},"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"led-mirror-as913050-120","group":"electrical","name":"LED mirror AS913050-120","code":"AS913050-120","icon":"ledmirror","finishes":[],"size":"1200 × 600 mm","pairs":"as813050a-120","electrical":{"rcm_reg":"","cert_no":"","standard":"AS/NZS 60598 (luminaires) or AS/NZS 60335 (heated rails)","install":"Hardwired. Must be installed by a licensed electrician."},"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"led-mirror-kl913003","group":"electrical","name":"LED mirror KL913003","code":"KL913003","icon":"ledmirror","finishes":[],"size":"1000 × 700 mm","pairs":"kl813003-100","electrical":{"rcm_reg":"","cert_no":"","standard":"AS/NZS 60598 (luminaires) or AS/NZS 60335 (heated rails)","install":"Hardwired. Must be installed by a licensed electrician."},"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"mirror-as913109","group":"mirrors","name":"Mirror cabinet AS913109-120","code":"AS913109-120","icon":"mirrorcab","finishes":[],"size":"1200 × 750 mm","pairs":"as813109-120","electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"mirror-as913117","group":"mirrors","name":"Timber-framed mirror AS913117","code":"AS913117","icon":"mirror","finishes":[],"size":"400 × 900 mm","pairs":"as813117","electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"mirror-kl913023a","group":"mirrors","name":"Mirror KL913023A","code":"KL913023A","icon":"mirror","finishes":[],"size":"800 × 900 mm","pairs":"kl813023a","electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"softclose-hinge","group":"hinges","name":"Soft-close hinge (pair)","code":"[CODE]","icon":"hinge","finishes":[],"size":"[OVERLAY] overlay, [ANGLE]° opening","pairs":null,"electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"drawer-runners","group":"hinges","name":"Soft-close drawer runners (pair)","code":"[CODE]","icon":"runner","finishes":[],"size":"[LENGTH] mm, [LOAD] kg rated","pairs":null,"electrical":null,"hidden":false,"ships_free":false,"price_aud":null,"example_price_aud":null},{"id":"test-tap","group":"test","name":"Test tap (payment test, do not buy)","code":"TEST-TAP","icon":"tap","finishes":[],"size":"Test item for checking real payments end to end. Nothing is shipped.","pairs":null,"electrical":null,"hidden":true,"ships_free":true,"price_aud":29,"example_price_aud":null}]};/*@end*/
 const PRICES=Object.fromEntries(CATALOG.vanities.filter(v=>v.price_aud!=null).map(v=>[v.id,v.price_aud])); // real AUD prices, for reference
 /* EXAMPLE prices so checkout can be tested. Set false once every price_aud is filled in. */
 const SHOW_EXAMPLE_PRICES=true;
@@ -732,7 +740,7 @@ function renderPDP(){
     <div class="tags"><span>${widthOf(p)} mm</span><span>${esc(p.mount)}</span><span>${LOOK_NAME[p.tone]}</span></div>
     <p class="stock">${leadHTML()}</p>
     <div class="buy"><button class="btn solid" type="button" data-add="${p.id}">Add to cart</button><button class="btn ink" type="button" data-buynow="${p.id}">Buy now</button><button class="btn" type="button" data-heart="${p.id}" aria-pressed="${saved.has(p.id)}">${saved.has(p.id)?"Saved":"Save for later"}</button></div>
-    <div class="ctl"><h3>Complete the look <small>${tapsFor(p).type==="vessel"?"Matched to this vanity's vessel basin":"Matched to this vanity's basin tap hole"} · ships in the same carton</small></h3>${upsellRows(p,4)}</div>
+    <div class="ctl"><h3>Complete the look <small>${tapsFor(p).type==="vessel"?"Matched to this vanity's vessel basin":"Matched to this vanity's basin tap hole"} · ships in the same carton</small></h3>${upsellRows(p,4)}${accLinkHTML(p)}</div>
     <dl class="spec">
       <dt>Cabinet</dt><dd>${esc(p.cabinet)}</dd>
       <dt>Finish</dt><dd>${esc(p.finish)}</dd>
@@ -748,7 +756,7 @@ function go(id){document.getElementById(id).scrollIntoView({behavior:reduced()?"
 
 document.addEventListener("click",e=>{
   if(e.target.classList?.contains("vmodal")){closeVideo();return;}
-  const t=e.target.closest("[data-addtap],[data-ttype],[data-tapfin],[data-tapopen],[data-tapclose],[data-tapclose-bg],[data-add],[data-buynow],[data-opencart],[data-closecart],[data-qty],[data-rm],[data-gocheckout],[data-closeco],[data-place],[data-testorder],[data-editpay],[data-retrypay],[data-done],[data-look],[data-bucket],[data-piece],[data-pimg],[data-chip],[data-reserve],[data-trade],[data-reset],[data-heart],[data-scroll],[data-video],[data-vscroll],[data-vclose]");
+  const t=e.target.closest("[data-agroup],[data-accfin],[data-askacc],[data-accgo],[data-addtap],[data-ttype],[data-tapfin],[data-tapopen],[data-tapclose],[data-tapclose-bg],[data-add],[data-buynow],[data-opencart],[data-closecart],[data-qty],[data-rm],[data-gocheckout],[data-closeco],[data-place],[data-testorder],[data-editpay],[data-retrypay],[data-done],[data-look],[data-bucket],[data-piece],[data-pimg],[data-chip],[data-reserve],[data-trade],[data-reset],[data-heart],[data-scroll],[data-video],[data-vscroll],[data-vclose]");
   if(!t) return;
   const d=t.dataset;
   if(d.video){const i=+d.video; i===activeReel?openVideo(i):centerReel(i,true); return;}
@@ -770,6 +778,10 @@ document.addEventListener("click",e=>{
   if(d.add){e.preventDefault();addToCart(d.add);return;}
   if(d.addtap){const [k,q]=d.addtap.split("|"), it=itemOf(k); if(cart[k]){delete cart[k];saveCart();renderCart();toast(`${it.title} (${it.sub}) removed`);} else {addToCart(k,true,+q||1);toast(`${it.title} (${it.sub}) added`);} refreshUpsells(); return;}
   if(d.ttype){tapType=d.ttype;renderTapware();return;}
+  if(d.agroup){accGroup=d.agroup;renderAccessories();return;}
+  if(d.accfin){const [aid,fin]=d.accfin.split("|");accFin[aid]=fin;renderAccessories();return;}
+  if(d.askacc){askAbout(d.askacc);return;}
+  if(d.accgo){const [g,fin]=d.accgo.split("|");accGroup=g;if(fin)ACC.forEach(a=>{if(a.finishes.includes(fin))accFin[a.id]=fin;});renderAccessories();go("accessories");return;}
   if(d.tapfin){const [tid,fin,where]=d.tapfin.split("|");tapFin[tid]=fin; if(where==="sheet") openTap(tid,fin); else renderTapware(); return;}
   if(d.tapopen){const [tid,fin]=d.tapopen.split("|");openTap(tid,fin);return;}
   if(d.tapclose){closeTap(); if(!d.piece) return;}
@@ -839,6 +851,8 @@ function tapSVG(type,fin){
 const tapImg=(type,fin)=>"data:image/svg+xml,"+encodeURIComponent(tapSVG(type,fin).replace('aria-hidden="true"','xmlns="http://www.w3.org/2000/svg"'));
 const tapKey=(t,fin)=>`tap:${t.id}:${fin}`;
 function itemOf(id){
+  if(id.startsWith("acc:")){const r=PX.resolveItem(id,CATALOG); if(!r) return null; const a=r.entry, fin=r.finish, u=unitOf(id);
+    return {id,kind:"accessory",title:a.name,sub:fin?FINISH[fin].label:a.size,code:a.code,img:accImg(a.icon,fin),price:u?u.amount:0,priced:!!u,example:!!u?.example,ok:PX.compliant(r),acc:a,fin};}
   if(id.startsWith("tap:")){const [,tid,fin]=id.split(":"),t=tapById(tid); if(!t||!FINISH[fin]) return null;
     const u=unitOf(id); return {id,kind:"tap",title:t.name,sub:FINISH[fin].label,code:t.code,img:tapImg(t.type,fin),price:u?u.amount:0,priced:!!u,example:!!u?.example,ok:tapCompliant(t),tap:t,fin};}
   const p=byId(id); if(!p) return null;
@@ -874,6 +888,75 @@ function openTap(tid,fin){
   $("#tapsheet").hidden=false; document.body.style.overflow="hidden"; $("#tapsheet .xbtn").focus();
 }
 function closeTap(){$("#tapsheet").hidden=true; if($("#checkout").hidden&&$("#drawer").hidden) document.body.style.overflow="";}
+
+/* ==== FINISHING TOUCHES (accessories) ====
+   Data comes from data/products.json "accessories" via CATALOG. Codes, sizes and prices are placeholders
+   until the supplier confirms them; an unpriced item shows "Price coming soon" and an "Ask about it" button.
+   Electrical items (LED mirrors, wall lights, heated rails) can't be checked out until their RCM and
+   certificate numbers are filled in. */
+/* Hidden items (the payment test product) only appear at /?test=1 */
+const TEST_MODE=new URLSearchParams(location.search).get("test")==="1";
+const ACC=(CATALOG.accessories||[]).filter(a=>!a.hidden||TEST_MODE);
+const ACC_GROUPS={"test":"Test","bath-acc":"Bathroom accessories","hardware":"Handles & knobs","bath-shelving":"Shelving","electrical":"Lighting & heated","mirrors":"Mirrors","hinges":"Hinges & runners"};
+let accGroup=TEST_MODE?"test":"all"; const accFin={};
+const accKey=(a,fin)=>a.finishes.length?`acc:${a.id}:${fin||a.finishes[0]}`:`acc:${a.id}`;
+function accSVG(icon,fin){
+  const f=FINISH[fin]||FINISH.chrome, g=`a${icon}${fin||"x"}`, M=`url(#${g})`, T="#b08a5f", W="#ece8e0", G="#cfe0e6", L="#ffe9a8";
+  const grad=`<defs><linearGradient id="${g}" x1="0" x2="1"><stop offset="0" stop-color="${f.hex}"/><stop offset=".45" stop-color="${f.hi}"/><stop offset="1" stop-color="${f.hex}"/></linearGradient></defs>`;
+  const s={
+    handle:`<rect x="40" y="62" width="8" height="18" rx="3" fill="${M}"/><rect x="112" y="62" width="8" height="18" rx="3" fill="${M}"/><rect x="28" y="52" width="104" height="13" rx="6.5" fill="${M}"/>`,
+    knob:`<rect x="74" y="72" width="12" height="20" rx="4" fill="${M}"/><circle cx="80" cy="56" r="24" fill="${M}"/>`,
+    edgepull:`<rect x="30" y="48" width="100" height="52" rx="3" fill="${W}"/><rect x="30" y="38" width="100" height="12" rx="3" fill="${M}"/>`,
+    rail:`<circle cx="28" cy="56" r="11" fill="${M}"/><circle cx="132" cy="56" r="11" fill="${M}"/><rect x="22" y="51" width="116" height="10" rx="5" fill="${M}"/>`,
+    ring:`<rect x="66" y="22" width="28" height="22" rx="6" fill="${M}"/><circle cx="80" cy="74" r="26" fill="none" stroke="${M}" stroke-width="7"/>`,
+    hook:`<rect x="68" y="26" width="24" height="24" rx="7" fill="${M}"/><path d="M80 48v22q0 16 18 16" fill="none" stroke="${M}" stroke-width="9" stroke-linecap="round"/>`,
+    roll:`<rect x="34" y="36" width="14" height="44" rx="5" fill="${M}"/><circle cx="92" cy="70" r="26" fill="#f6f4ef" stroke="#d9d4ca" stroke-width="2"/><rect x="46" y="51" width="70" height="7" rx="3.5" fill="${M}"/>`,
+    set:`<rect x="18" y="24" width="124" height="8" rx="4" fill="${M}"/><circle cx="44" cy="80" r="17" fill="none" stroke="${M}" stroke-width="5"/><rect x="84" y="60" width="14" height="14" rx="4" fill="${M}"/><path d="M91 74v10q0 9 10 9" fill="none" stroke="${M}" stroke-width="5" stroke-linecap="round"/><rect x="118" y="62" width="8" height="30" rx="3" fill="${M}"/><rect x="124" y="74" width="20" height="5" rx="2.5" fill="${M}"/>`,
+    shelf:`<rect x="26" y="74" width="108" height="6" rx="2" fill="#00000014"/><rect x="24" y="58" width="112" height="15" rx="2" fill="${T}"/>`,
+    ladder:`<path d="M62 10L50 112M106 10L118 112" stroke="${T}" stroke-width="7" stroke-linecap="round"/>${[30,52,74,96].map((y,i)=>`<rect x="${58-i*3}" y="${y}" width="${52+i*6}" height="6" rx="3" fill="${T}"/>`).join("")}`,
+    organiser:`<rect x="34" y="20" width="92" height="84" rx="6" fill="none" stroke="#9aa3a8" stroke-width="5"/><rect x="34" y="58" width="92" height="5" fill="#9aa3a8"/><rect x="44" y="34" width="26" height="22" rx="3" fill="${W}"/><rect x="78" y="40" width="20" height="16" rx="3" fill="${G}"/><rect x="48" y="74" width="40" height="24" rx="3" fill="${W}"/>`,
+    walllight:`<ellipse cx="80" cy="76" rx="56" ry="16" fill="${L}" opacity=".55"/><rect x="72" y="34" width="16" height="30" rx="4" fill="${M}"/><rect x="26" y="52" width="108" height="14" rx="7" fill="${M}"/>`,
+    heatedrail:`<rect x="38" y="10" width="9" height="100" rx="4" fill="${M}"/><rect x="113" y="10" width="9" height="100" rx="4" fill="${M}"/>${[20,36,52,68,84,100].map(y=>`<rect x="42" y="${y}" width="76" height="6" rx="3" fill="${M}"/>`).join("")}`,
+    ledmirror:`<rect x="44" y="8" width="72" height="104" rx="18" fill="${G}" stroke="${L}" stroke-width="5"/><path d="M60 30l18-14M60 52l34-28" stroke="#fff" stroke-width="4" opacity=".7" stroke-linecap="round"/>`,
+    mirror:`<rect x="48" y="8" width="64" height="104" rx="6" fill="${T}"/><rect x="56" y="16" width="48" height="88" rx="3" fill="${G}"/><path d="M64 38l16-14M64 58l30-26" stroke="#fff" stroke-width="4" opacity=".7" stroke-linecap="round"/>`,
+    mirrorcab:`<rect x="24" y="20" width="112" height="76" rx="8" fill="${W}" stroke="#cfc8bb" stroke-width="2"/><rect x="31" y="27" width="47" height="62" rx="3" fill="${G}"/><rect x="82" y="27" width="47" height="62" rx="3" fill="${G}"/><path d="M40 50l18-14M88 50l18-14" stroke="#fff" stroke-width="4" opacity=".7" stroke-linecap="round"/>`,
+    hinge:`<circle cx="50" cy="60" r="18" fill="${M}"/><circle cx="50" cy="60" r="10" fill="#00000022"/><rect x="58" y="52" width="58" height="16" rx="5" fill="${M}"/><rect x="108" y="42" width="26" height="36" rx="5" fill="${M}"/>`,
+    runner:`<rect x="12" y="50" width="136" height="16" rx="4" fill="${M}"/><rect x="34" y="55" width="108" height="6" rx="3" fill="#00000026"/><circle cx="24" cy="58" r="3" fill="#00000040"/>`
+  };
+  if(icon==="tap") return tapSVG("basin",fin||"chrome");
+  return `<svg viewBox="0 0 160 120" aria-hidden="true">${grad}${s[icon]||s.shelf}</svg>`;
+}
+const accImg=(icon,fin)=>"data:image/svg+xml,"+encodeURIComponent(accSVG(icon,fin).replace('aria-hidden="true"','xmlns="http://www.w3.org/2000/svg"'));
+const accPriceHTML=(a,fin)=>{const u=unitOf(accKey(a,fin));return u?`${money(u.amount)}${u.example?'<span class="xprice">example</span>':""}`:`<span style="font-weight:600;color:var(--muted)">Price coming soon</span>`;};
+function accCompHTML(a){
+  if(!a.electrical) return "";
+  const e=a.electrical, ok=e.rcm_reg&&e.cert_no;
+  return `<div class="comp">${ok?`<span>RCM ${esc(e.rcm_reg)}</span><span>Cert. ${esc(e.cert_no)}</span>`:`<span class="ph">RCM NO.</span><span class="ph">CERT. NO.</span>`}<span>${esc(e.install)}</span></div>`;
+}
+function renderAccessories(){
+  const groups=Object.keys(ACC_GROUPS).filter(g=>ACC.some(a=>a.group===g));
+  $("#atabs").innerHTML=[["all","All"],...groups.map(g=>[g,ACC_GROUPS[g]])].map(([k,l])=>`<button data-agroup="${k}" aria-pressed="${k===accGroup}">${esc(l)}</button>`).join("");
+  const order=Object.keys(ACC_GROUPS);
+  $("#agrid").innerHTML=ACC.filter(a=>accGroup==="all"||a.group===accGroup).sort((x,y)=>order.indexOf(x.group)-order.indexOf(y.group)).map(a=>{
+    const fin=a.finishes.length?(accFin[a.id]||a.finishes[0]):null, key=accKey(a,fin), priced=!!unitOf(key), pair=a.pairs&&byId(a.pairs);
+    return `<div class="tcard"><div class="tpic" role="img" aria-label="${esc(a.name)}">${accSVG(a.icon,fin)}</div>
+      <span class="name">${esc(a.name)}</span>
+      ${fin?`<div class="sw-row">${a.finishes.map(k=>`<button data-accfin="${a.id}|${k}" aria-pressed="${k===fin}" aria-label="${FINISH[k].label}" style="background:${FINISH[k].hex}"></button>`).join("")}<small>${FINISH[fin].label}</small></div>`:""}
+      <span class="fits">${phify(a.size)}${pair?` · pairs with <button class="tlinkb" data-piece="${pair.id}" style="background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer">the ${esc(pair.name)}</button>`:""}</span>
+      ${accCompHTML(a)}
+      <span class="fits">Code ${phify(a.code)}</span>
+      <div class="row"><b>${accPriceHTML(a,fin)}</b>${priced?`<button class="btn" data-add="${key}">Add to cart</button>`:`<button class="btn" data-askacc="${key}">Ask about it</button>`}</div></div>`;}).join("");
+}
+/* Product view: link to the matching mirror and to accessories in this look's finish */
+function accLinkHTML(p){
+  const mirror=ACC.find(a=>a.pairs===p.id), fin=LOOK_FINISH[p.tone]||"brass";
+  return `<p class="fits" style="margin-top:10px;font-size:.86rem">Finishing touches: ${mirror?`<button class="tlinkb" data-accgo="${mirror.group}|" style="background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer">${esc(mirror.name)}</button> · `:""}<button class="tlinkb" data-accgo="bath-acc|${fin}" style="background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer">towel rails and hooks in ${FINISH[fin].label.toLowerCase()} →</button></p>`;
+}
+function askAbout(key){
+  const it=itemOf(key); if(!it) return;
+  $("#f-msg").value=`Please send me the price and details for the ${it.title}${it.fin?" in "+it.sub:""}.`;
+  go("enquire"); setTimeout(()=>$("#f-name").focus({preventScroll:true}),400);
+}
 /* Upsell rows: matching taps for a vanity, its look's finish first */
 function upsellRows(p,limit){
   const {qty,models}=tapsFor(p), first=LOOK_FINISH[p.tone]||"brass";
@@ -889,20 +972,20 @@ let cart={};
 try{cart=JSON.parse(localStorage.getItem("bb-cart")||"{}")||{}}catch(e){cart={}}
 Object.keys(cart).forEach(id=>{if(!itemOf(id))delete cart[id];});
 const saveCart=()=>{try{localStorage.setItem("bb-cart",JSON.stringify(cart))}catch(e){} $("#cartCount").textContent=Object.values(cart).reduce((a,b)=>a+b,0);};
-const cartItems=()=>Object.entries(cart).filter(([,q])=>q>0).map(([id,q])=>({it:itemOf(id),q})).filter(x=>x.it).sort((a,b)=>(a.it.kind==="tap")-(b.it.kind==="tap"));
+const cartItems=()=>Object.entries(cart).filter(([,q])=>q>0).map(([id,q])=>({it:itemOf(id),q})).filter(x=>x.it).sort((a,b)=>(a.it.kind!=="vanity")-(b.it.kind!=="vanity"));
 const subtotal=()=>cartItems().reduce((a,{it,q})=>a+it.price*q,0);
 const anyExample=()=>cartItems().some(({it})=>it.example);
 const vanityCount=()=>cartItems().filter(({it})=>it.kind==="vanity").reduce((a,{q})=>a+q,0);
-const tapCount=()=>cartItems().filter(({it})=>it.kind==="tap").reduce((a,{q})=>a+q,0);
+const tapCount=()=>cartItems().filter(({it})=>it.kind!=="vanity"&&!it.acc?.ships_free).reduce((a,{q})=>a+q,0); // small items: taps and accessories (test items ship free)
 let toastT=0;
 function toast(t){const el=$("#toast");el.textContent=t;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,2200);}
 let upsellFor=null;
 function addToCart(id,silent,n){const it=itemOf(id); if(!it) return; cart[id]=(cart[id]||0)+(n||1);saveCart();
   if(it.kind==="vanity"&&!silent){upsellFor=id;openCart();return;}
-  renderCart(); refreshUpsells(); if(!silent)toast(`${it.title}${it.kind==="tap"?" ("+it.sub+")":""} added to cart`);}
+  renderCart(); refreshUpsells(); if(!silent)toast(`${it.title}${it.fin?" ("+it.sub+")":""} added to cart`);}
 function refreshUpsells(){if(!$("#pinfo").hidden)renderPDP(); if(!$("#checkout").hidden)renderCheckout(); if(!$("#drawer").hidden)renderCart();}
 function setQty(id,n){if(n<=0)delete cart[id];else cart[id]=Math.min(n,20);saveCart();renderCart();if(!$("#checkout").hidden)renderCheckout();}
-function lineHTML({it,q},editable){return `<div class="line"><img src="${it.img}" alt="" style="${it.kind==="tap"?"object-fit:contain;padding:6px":""}"><div><b>${esc(it.title)}</b><small>${it.kind==="tap"?esc(it.sub)+(vanityCount()?" · ships with your vanity":""):esc(it.code)+" · "+esc(it.sub)}</small>${editable?`<span class="qty"><button data-qty="${it.id}|-1" aria-label="One less">−</button><span>${q}</span><button data-qty="${it.id}|1" aria-label="One more">+</button></span><button class="rm" data-rm="${it.id}">Remove</button>`:`<small>Qty ${q}</small>`}</div><span class="amt">${money(it.price*q)}</span></div>`;}
+function lineHTML({it,q},editable){return `<div class="line"><img src="${it.img}" alt="" style="${it.kind!=="vanity"?"object-fit:contain;padding:6px":""}"><div><b>${esc(it.title)}</b><small>${it.kind!=="vanity"?phify(it.sub)+(vanityCount()?" · ships with your vanity":""):esc(it.code)+" · "+esc(it.sub)}</small>${editable?`<span class="qty"><button data-qty="${it.id}|-1" aria-label="One less">−</button><span>${q}</span><button data-qty="${it.id}|1" aria-label="One more">+</button></span><button class="rm" data-rm="${it.id}">Remove</button>`:`<small>Qty ${q}</small>`}</div><span class="amt">${money(it.price*q)}</span></div>`;}
 function cartUpsellHTML(){
   const vans=cartItems().filter(({it})=>it.kind==="vanity").map(({it})=>it.p);
   if(!vans.length) return "";
@@ -937,8 +1020,9 @@ function freight(){
   const c=shipCountry();
   if(!PX.pricesReady(c)) return {amt:null,label:`We're not shipping to ${esc(c.name)} yet`};
   const v=vanityCount(), f=PX.freightFor(c,v,tapCount(),SHOW_EXAMPLE_PRICES);
-  const what=v?`${v} vanity carton${v>1?"s":""}`:"Tapware parcel";
-  if(f.amount==null) return {amt:null,label:`${what} to ${esc(c.name)}: ${phify(String((c.freight||{})[v?"per_vanity":"tap_only"]))}`};
+  if(!v&&!tapCount()) return {amt:0,label:`no charge to ${esc(c.name)} (test item)`};
+  const what=v?`${v} vanity carton${v>1?"s":""}`:"Small parcel";
+  if(f.amount==null) return {amt:null,label:`${what} to ${esc(c.name)}: ${phify(String((c.freight||{})[v?"per_vanity":"small_parcel"]))}`};
   return {amt:f.amount,example:f.example,label:`${what} to ${esc(c.name)}`};
 }
 function totals(){const q=quoteNow(), f=freight(); if(q.ok) return {ok:true,sub:q.subtotal,f,tot:q.total,q}; const sub=subtotal(); return {ok:false,sub,f,tot:sub+(f.amt||0),q};}
@@ -1124,16 +1208,17 @@ function setShipTo(code){
   shipTo=code; try{localStorage.setItem("edh-ship-to",code);}catch(e){}
   const c=shipCountry(); if(!(c.regions||[]).includes(co.region)&&(c.regions||[]).length) co.region="";
   renderShipTo(); $("#carousel").innerHTML=FEATURED.map(byId).filter(Boolean).map(card).join("");
-  renderGrid(); renderPDP(); renderTapware(); renderCart(); if(!$("#checkout").hidden&&!co.pay) renderCheckout();
+  renderGrid(); renderPDP(); renderTapware(); renderAccessories(); renderCart(); if(!$("#checkout").hidden&&!co.pay) renderCheckout();
 }
 document.addEventListener("change",e=>{
   if(e.target.id==="shipTo") setShipTo(e.target.value);
   if(e.target.id==="co-country"){readCo(); setShipTo(e.target.value);}
 });
 document.addEventListener("keydown",e=>{if(e.key!=="Escape")return; if(!$("#tapsheet").hidden){closeTap();return;} if(!$("#drawer").hidden)closeCart(); else if(!$("#checkout").hidden)closeCheckout();});
-saveCart(); renderTapware(); renderShipTo();
+saveCart(); renderTapware(); renderAccessories(); renderShipTo();
 
 persist(); renderReels(); renderGrid(); renderPDP(); showReturn();
+if(TEST_MODE) setTimeout(()=>go("accessories"),300);
 
 /* ==== Reels centre-lock: slow eased glide, one video per swipe, size follows position ==== */
 let activeReel=0;
